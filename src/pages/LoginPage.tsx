@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/api';
 
-function LoginPage() {
-  // const [token, setToken] = useState<string>("");
+interface LoginPageProps {
+  loginSuccess: (token: string) => void;
+}
+
+function LoginPage({ loginSuccess }: LoginPageProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -19,12 +22,12 @@ function LoginPage() {
     event.preventDefault();
     try {
       const token: string = await api.login({ email, password });
-      api.putAccessToken(token);
+      loginSuccess(token);
+      setEmail("");
+      setPassword("");  
     } catch (error) {
       console.log((error as Error).message);
-    }
-    setEmail("");
-    setPassword("");
+    }    
   };
 
   return (
@@ -40,7 +43,7 @@ function LoginPage() {
           </div>
         </div>
         <div className="sm:col-span-4 mt-4">
-          <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">Password</label>
+          <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">Password</label>
           <div className="mt-2">
             <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
               <input type="password" name="password" id="password" value={password} onChange={onPasswordChangeHandler} className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" placeholder="Password" />

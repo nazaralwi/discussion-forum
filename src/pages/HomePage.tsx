@@ -2,8 +2,14 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Thread } from '../utils/models';
 import api from '../utils/api';
+import ThreadForm from '../components/ThreadForm';
+import ThreadRow from '../components/ThreadRow';
 
-function HomePage() {
+interface HomePageProps {
+  isAuth: boolean;
+}
+
+function HomePage({ isAuth }: HomePageProps) {
   const [threads, setThreads] = useState<Thread[]>([]);
 
   useEffect(() => {
@@ -19,19 +25,35 @@ function HomePage() {
     fetchThreads();
   });
 
+  if (!isAuth) {
+    return (
+      <>
+        <main className="flex flex-1 p-4 justify-center">
+          <div className='flex flex-col gap-2'>
+            {
+              threads.length > 0 ? (
+                threads.map((thread) => (
+                  <ThreadRow thread={thread} />
+                ))
+              ) : (
+                <p>Loading...</p>
+              )
+            }
+          </div>
+        </main>
+      </>
+    );  
+  }
+
   return (
     <>
       <main className="flex flex-1 p-4 justify-center">
+        <ThreadForm />
         <div className='flex flex-col gap-2'>
           {
             threads.length > 0 ? (
               threads.map((thread) => (
-                <div key={thread.id} className='p-2 border-2 rounded-sm'>
-                  <Link to={`/threads/${thread.id}`}>
-                    <h3 className='text-lg'>{thread.title}</h3>
-                  </Link>
-                  <h3>{thread.body}</h3>
-                </div>
+                <ThreadRow thread={thread} />
               ))
             ) : (
               <p>Loading...</p>
@@ -40,7 +62,7 @@ function HomePage() {
         </div>
       </main>
     </>
-  )
+  );
 }
 
 export default HomePage;

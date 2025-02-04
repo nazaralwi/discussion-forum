@@ -1,14 +1,20 @@
 import {
   RegisterParams,
   LoginParams,
+  CreateThreadParams,
   User,
   RegisterResponse,
   LoginResponse,
   ThreadResponse,
+  ThreadsResponse,
   UserResponse,
   LeaderboardsResponse,
   ThreadDetailResponse,
-  Thread
+  Thread,
+  UpvoteThreadResponse,
+  Vote,
+  ThreadDetail,
+  Leaderboard
 } from "./models";
 
 const api = (() => {
@@ -26,6 +32,10 @@ const api = (() => {
 
   function putAccessToken(token: string): void {
     localStorage.setItem('accessToken', token);
+  }
+
+  function deleteAccessToken(): void {
+    localStorage.removeItem('accessToken');
   }
 
   function getAccessToken(): string | null {
@@ -79,12 +89,76 @@ const api = (() => {
     const { data: { token } } = responseJSON;
 
     return token;
-  }
+  };
+
+  async function createThread({ title, body }: CreateThreadParams): Promise<Thread> {
+    const response = await _fetchWithAuth(`${BASE_URL}/threads`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+      body: JSON.stringify({ title, body }),
+    });
+
+    const responseJSON: ThreadResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    const { data: { thread } } = responseJSON;
+
+    return thread;
+  };
+
+  async function upVoteThread(threadId: string): Promise<Vote> {
+    const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/up-vote`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+    });
+
+    const responseJSON: UpvoteThreadResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    const { data: { vote } } = responseJSON;
+
+    return vote;
+  };
+
+  async function downVoteThread(threadId: string): Promise<Vote> {
+    const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/down-vote`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+    });
+
+    const responseJSON: UpvoteThreadResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    const { data: { vote } } = responseJSON;
+
+    return vote;
+  };
 
   async function getAllThreads(): Promise<Thread[]> {
     const response = await fetch(`${BASE_URL}/threads`);
 
-    const responseJSON: ThreadResponse = await response.json();
+    const responseJSON: ThreadsResponse = await response.json();
 
     const { status, message } = responseJSON;
 
@@ -147,9 +221,13 @@ const api = (() => {
   
   return {
     putAccessToken,
+    deleteAccessToken,
     getAccessToken,
     register,
     login,
+    createThread,
+    upVoteThread,
+    downVoteThread,
     getAllThreads,
     getAllUsers,
     getAllLeaderboards,

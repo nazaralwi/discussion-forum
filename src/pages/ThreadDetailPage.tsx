@@ -35,7 +35,7 @@ function ThreadDetailPage() {
 
   return (
     <>
-      <main className="flex flex-1 p-4 justify-center items-center">
+      <main className="flex flex-1 p-4 justify-center">
         <div key={thread.id}>
           <h3>{thread.title}</h3>
           <h3>{thread.body}</h3>

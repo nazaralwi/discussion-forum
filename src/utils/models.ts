@@ -9,6 +9,11 @@ export interface LoginParams {
   password: string;
 }
 
+export interface CreateThreadParams {
+  title: string;
+  body: string;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -36,7 +41,23 @@ export interface ThreadResponse {
   status: "success" | "failure";
   message: string;
   data: {
+    thread: Thread;
+  }
+}
+
+export interface ThreadsResponse {
+  status: "success" | "failure";
+  message: string;
+  data: {
     threads: Thread[];
+  }
+}
+
+export interface UpvoteThreadResponse {
+  status: "success" | "failure";
+  message: string;
+  data: {
+    vote: Vote;
   }
 }
 
@@ -86,6 +107,13 @@ export interface ThreadDetail {
   upVotesBy: User[];
   downVotesBy: User[];
   comments: Comment[];
+}
+
+export interface Vote {
+  id: string;
+  userId: string;
+  threadId: string;
+  voteType: number;
 }
 
 export interface Comment {
