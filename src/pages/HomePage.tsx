@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Thread } from '../utils/models';
 import api from '../utils/api';
 import ThreadForm from '../components/ThreadForm';
@@ -23,7 +22,7 @@ function HomePage({ isAuth }: HomePageProps) {
     }
 
     fetchThreads();
-  });
+  }, []);
 
   if (!isAuth) {
     return (
@@ -33,7 +32,7 @@ function HomePage({ isAuth }: HomePageProps) {
             {
               threads.length > 0 ? (
                 threads.map((thread) => (
-                  <ThreadRow thread={thread} />
+                  <ThreadRow key={thread.id} thread={thread} />
                 ))
               ) : (
                 <p>Loading...</p>
@@ -53,7 +52,7 @@ function HomePage({ isAuth }: HomePageProps) {
           {
             threads.length > 0 ? (
               threads.map((thread) => (
-                <ThreadRow thread={thread} />
+                <ThreadRow key={thread.id} thread={thread} />
               ))
             ) : (
               <p>Loading...</p>

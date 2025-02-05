@@ -14,7 +14,10 @@ import {
   UpvoteThreadResponse,
   Vote,
   ThreadDetail,
-  Leaderboard
+  Leaderboard,
+  ThreadComment,
+  ThreadCommentResponse,
+  ProfileResponse
 } from "./models";
 
 const api = (() => {
@@ -91,6 +94,27 @@ const api = (() => {
     return token;
   };
 
+  async function getOwnProfile(): Promise<User> {
+    const response = await _fetchWithAuth(`${BASE_URL}/users/me`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+    });
+
+    const responseJSON: ProfileResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    const { data: { user } } = responseJSON;
+
+    return user;
+  };
+
   async function createThread({ title, body }: CreateThreadParams): Promise<Thread> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads`, {
       method: 'POST',
@@ -153,6 +177,70 @@ const api = (() => {
     const { data: { vote } } = responseJSON;
 
     return vote;
+  };
+
+  async function upVoteComment(threadId: string, commentId: string): Promise<Vote> {
+    const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/comments/${commentId}/up-vote`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+    });
+
+    const responseJSON: UpvoteThreadResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    const { data: { vote } } = responseJSON;
+
+    return vote;
+  };
+
+  async function downVoteComment(threadId: string, commentId: string): Promise<Vote> {
+    const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/comments/${commentId}/down-vote`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+    });
+
+    const responseJSON: UpvoteThreadResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    const { data: { vote } } = responseJSON;
+
+    return vote;
+  };
+
+  async function createComment(threadId: string, content: string): Promise<ThreadComment> {
+    const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/comments`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+      body: JSON.stringify({ content }),
+    });
+
+    const responseJSON: ThreadCommentResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    const { data: { comment } } = responseJSON;
+
+    return comment;
   };
 
   async function getAllThreads(): Promise<Thread[]> {
@@ -225,9 +313,13 @@ const api = (() => {
     getAccessToken,
     register,
     login,
+    getOwnProfile,
     createThread,
     upVoteThread,
     downVoteThread,
+    upVoteComment,
+    downVoteComment,
+    createComment,
     getAllThreads,
     getAllUsers,
     getAllLeaderboards,

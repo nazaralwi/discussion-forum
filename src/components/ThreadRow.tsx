@@ -24,7 +24,7 @@ function ThreadRow({ thread }: ThreadRowProps) {
   };
 
   return (
-    <div key={thread.id} className='p-2 border-2 rounded-sm'>
+    <div className='p-2 border-2 rounded-sm'>
       <Link to={`/threads/${thread.id}`}>
         <h3 className='text-lg'>{thread.title}</h3>
       </Link>
@@ -33,6 +33,7 @@ function ThreadRow({ thread }: ThreadRowProps) {
       <button onClick={onUpvoteClickHandler}>{thread.upVotesBy.length} Upvote</button>
       <button onClick={onDevoteClickHandler} className="ml-4">{thread.downVotesBy.length} Devote</button>
       <button onClick={onCommentClickHandler} className="ml-4">{thread.totalComments} Comments</button>
+      <p>{thread.ownerId}</p>
     </div>
   )
 }
