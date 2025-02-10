@@ -39,12 +39,12 @@ function ThreadDetailPage() {
             : [...comment.upVotesBy, profile.id],
           downVotesBy: hasDownvoted
             ? comment.downVotesBy.filter((userId) => userId !== profile.id)
-            : comment.downVotesBy
-        }
+            : comment.downVotesBy,
+        };
       }
 
       return comment;
-    })
+    });
 
     setThread({ ...thread, comments: updatedComments });
 
@@ -73,12 +73,12 @@ function ThreadDetailPage() {
             : comment.upVotesBy,
           downVotesBy: hasDownvoted
             ? comment.downVotesBy.filter((userId) => userId !== profile.id)
-            : [...comment.downVotesBy, profile.id]
-        }
+            : [...comment.downVotesBy, profile.id],
+        };
       }
 
       return comment;
-    })
+    });
 
     setThread({ ...thread, comments: updatedComments });
 
@@ -92,8 +92,15 @@ function ThreadDetailPage() {
   const createComment = async (content: string) => {
     assertString(id);
     const profile = await api.getOwnProfile();
-    
-    const comment: ThreadComment = { id: (+new Date).toString(), content, createdAt: new Date().toISOString(), owner: profile, upVotesBy: [], downVotesBy: []}
+
+    const comment: ThreadComment = {
+      id: (+new Date()).toString(),
+      content,
+      createdAt: new Date().toISOString(),
+      owner: profile,
+      upVotesBy: [],
+      downVotesBy: [],
+    };
     const comments = thread.comments;
     comments.unshift(comment);
     setThread({ ...thread, comments: comments });
@@ -114,21 +121,26 @@ function ThreadDetailPage() {
 
         <h2>Comments ({thread.comments.length})</h2>
         <CommentForm createComment={createComment} />
-        {
-          thread.comments.map((comment) => (
-            <div key={comment.id}>
-              <h5>{comment.owner.name}</h5>
-              <h5>{comment.owner.avatar}</h5>
-              <h3>{comment.content}</h3>
-              <h3>{comment.createdAt}</h3>
-              <button onClick={() => onUpvoteClickHandler(comment.id)}>{comment.upVotesBy.length} Upvote</button>
-              <button onClick={() => onDevoteClickHandler(comment.id)} className="ml-4">{comment.downVotesBy.length} Devote</button>
-            </div>
-          ))
-        }
+        {thread.comments.map((comment) => (
+          <div key={comment.id}>
+            <h5>{comment.owner.name}</h5>
+            <h5>{comment.owner.avatar}</h5>
+            <h3>{comment.content}</h3>
+            <h3>{comment.createdAt}</h3>
+            <button onClick={() => onUpvoteClickHandler(comment.id)}>
+              {comment.upVotesBy.length} Upvote
+            </button>
+            <button
+              onClick={() => onDevoteClickHandler(comment.id)}
+              className="ml-4"
+            >
+              {comment.downVotesBy.length} Devote
+            </button>
+          </div>
+        ))}
       </main>
     </>
-  )
+  );
 }
 
 export default ThreadDetailPage;

@@ -26,7 +26,7 @@ export interface RegisterResponse {
   message: string;
   data: {
     user: User;
-  }
+  };
 }
 
 export interface LoginResponse {
@@ -34,7 +34,7 @@ export interface LoginResponse {
   message: string;
   data: {
     token: string;
-  }
+  };
 }
 
 export interface ThreadResponse {
@@ -42,7 +42,7 @@ export interface ThreadResponse {
   message: string;
   data: {
     thread: Thread;
-  }
+  };
 }
 
 export interface ThreadsResponse {
@@ -50,7 +50,7 @@ export interface ThreadsResponse {
   message: string;
   data: {
     threads: Thread[];
-  }
+  };
 }
 
 export interface UpvoteThreadResponse {
@@ -58,7 +58,7 @@ export interface UpvoteThreadResponse {
   message: string;
   data: {
     vote: Vote;
-  }
+  };
 }
 
 export interface UserResponse {
@@ -66,7 +66,7 @@ export interface UserResponse {
   message: "ok";
   data: {
     users: User[];
-  }
+  };
 }
 
 export interface ProfileResponse {
@@ -74,7 +74,7 @@ export interface ProfileResponse {
   message: "ok";
   data: {
     user: User;
-  }
+  };
 }
 
 export interface LeaderboardsResponse {
@@ -82,7 +82,7 @@ export interface LeaderboardsResponse {
   message: "ok";
   data: {
     leaderboards: Leaderboard[];
-  }
+  };
 }
 
 export interface ThreadDetailResponse {
@@ -90,7 +90,7 @@ export interface ThreadDetailResponse {
   message: "ok";
   data: {
     detailThread: ThreadDetail;
-  }
+  };
 }
 
 export interface ThreadCommentResponse {
@@ -98,7 +98,7 @@ export interface ThreadCommentResponse {
   message: string;
   data: {
     comment: ThreadComment;
-  }
+  };
 }
 
 export interface Thread {
@@ -144,4 +144,9 @@ export interface ThreadComment {
 export interface Leaderboard {
   user: User;
   score: number;
+}
+
+export interface ActionCreatorObject<T> {
+  type: string;
+  payload: T;
 }

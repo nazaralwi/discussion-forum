@@ -1,63 +1,75 @@
-import { useEffect, useState } from 'react';
-import { Thread } from '../utils/models';
-import api from '../utils/api';
-import ThreadForm from '../components/ThreadForm';
-import ThreadRow from '../components/ThreadRow';
+import { useEffect } from "react";
+import api from "../utils/api";
+import ThreadForm from "../components/ThreadForm";
+import ThreadList from "../components/ThreadList";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../states";
+import {
+  downVoteThread,
+  fetchThreads,
+  upVoteThread,
+} from "../states/threads/threadsSlice";
 
 interface HomePageProps {
   isAuth: boolean;
 }
 
 function HomePage({ isAuth }: HomePageProps) {
-  const [threads, setThreads] = useState<Thread[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const { threads, status } = useSelector((state: RootState) => state.threads);
+  const { profile } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
-    async function fetchThreads() {
-      try {
-        const threads: Thread[] = await api.getAllThreads();
-        setThreads(threads);
-      } catch (error) {
-        console.log("Error: " + (error as Error).message);
-      }
+    if (status === "idle") {
+      dispatch(fetchThreads());
     }
+  }, [dispatch, status]);
 
-    fetchThreads();
-  }, []);
+  const createThread = async (title: string, body: string) => {
+    const createThreadResponse = await api.createThread({ title, body });
+    console.log(createThreadResponse);
+  };
 
+  const handleUpVote = async (id: string) => {
+    console.log("handleUpVote");
+    dispatch(upVoteThread(id));
+  };
+
+  const handleDownVotes = async (id: string) => {
+    console.log("handleDownVote");
+    dispatch(downVoteThread(id));
+  };
+
+  if (status === "loading") return <p>Loading....</p>;
+  if (status === "failed") return <p>Failed to load threads</p>;
+
+  console.log("Profile: " + profile);
   if (!isAuth) {
     return (
       <>
         <main className="flex flex-1 p-4 justify-center">
-          <div className='flex flex-col gap-2'>
-            {
-              threads.length > 0 ? (
-                threads.map((thread) => (
-                  <ThreadRow key={thread.id} thread={thread} />
-                ))
-              ) : (
-                <p>Loading...</p>
-              )
-            }
+          <div className="flex flex-col gap-2">
+            <ThreadList
+              threads={threads ?? []}
+              upVote={handleUpVote}
+              downVote={handleDownVotes}
+            />
           </div>
         </main>
       </>
-    );  
+    );
   }
 
   return (
     <>
       <main className="flex flex-1 p-4 justify-center">
-        <ThreadForm />
-        <div className='flex flex-col gap-2'>
-          {
-            threads.length > 0 ? (
-              threads.map((thread) => (
-                <ThreadRow key={thread.id} thread={thread} />
-              ))
-            ) : (
-              <p>Loading...</p>
-            )
-          }
+        <ThreadForm createThread={createThread} />
+        <div className="flex flex-col gap-2">
+          <ThreadList
+            threads={threads ?? []}
+            upVote={handleUpVote}
+            downVote={handleDownVotes}
+          />
         </div>
       </main>
     </>
