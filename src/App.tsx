@@ -5,8 +5,8 @@ import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
 import api from "./utils/api";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "./states";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./states";
 import { fetchProfile } from "./states/profile/profileSlice";
 
 function App() {

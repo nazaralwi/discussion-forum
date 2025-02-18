@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import profileSlice from "./profile/profileSlice";
 import { leaderboardsSlice } from "./leaderboards/leaderboardsSlice";
-import { userListSlice } from "./userlist/userlistSlice";
+import { userListSlice } from "./userlist/userListSlice";
 import { threadsSlice } from "./threads/threadsSlice";
+import { authUserSlice } from "./authUser/authUserSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     leaderboards: leaderboardsSlice.reducer,
     userList: userListSlice.reducer,
     profile: profileSlice.reducer,
+    authUser: authUserSlice.reducer,
   },
 });
 

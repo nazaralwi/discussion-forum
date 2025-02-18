@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import api from "../utils/api";
 import ThreadForm from "../components/ThreadForm";
 import ThreadList from "../components/ThreadList";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../states";
 import {
+  createThread,
   downVoteThread,
   fetchThreads,
   upVoteThread,
@@ -17,7 +17,6 @@ interface HomePageProps {
 function HomePage({ isAuth }: HomePageProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { threads, status } = useSelector((state: RootState) => state.threads);
-  const { profile } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
     if (status === "idle") {
@@ -25,9 +24,8 @@ function HomePage({ isAuth }: HomePageProps) {
     }
   }, [dispatch, status]);
 
-  const createThread = async (title: string, body: string) => {
-    const createThreadResponse = await api.createThread({ title, body });
-    console.log(createThreadResponse);
+  const handleCreateThread = async (title: string, body: string) => {
+    dispatch(createThread({ title: title, body: body }));
   };
 
   const handleUpVote = async (id: string) => {
@@ -43,7 +41,6 @@ function HomePage({ isAuth }: HomePageProps) {
   if (status === "loading") return <p>Loading....</p>;
   if (status === "failed") return <p>Failed to load threads</p>;
 
-  console.log("Profile: " + profile);
   if (!isAuth) {
     return (
       <>
@@ -63,7 +60,7 @@ function HomePage({ isAuth }: HomePageProps) {
   return (
     <>
       <main className="flex flex-1 p-4 justify-center">
-        <ThreadForm createThread={createThread} />
+        <ThreadForm createThread={handleCreateThread} />
         <div className="flex flex-col gap-2">
           <ThreadList
             threads={threads ?? []}

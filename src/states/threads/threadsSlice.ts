@@ -23,7 +23,6 @@ export const fetchThreads = createAsyncThunk(
 export const upVoteThread = createAsyncThunk(
   "threads/upVoteThread",
   async (id: string, { getState }) => {
-    console.log("upVoteThread");
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
@@ -37,7 +36,6 @@ export const upVoteThread = createAsyncThunk(
 export const downVoteThread = createAsyncThunk(
   "threads/downVoteThread",
   async (id: string, { getState }) => {
-    console.log("downVoteThread");
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
@@ -45,6 +43,13 @@ export const downVoteThread = createAsyncThunk(
 
     const response = await api.downVoteThread(id);
     return { threadId: id, userId: profile.id };
+  },
+);
+
+export const createThread = createAsyncThunk(
+  "threads/createThread",
+  async ({ title, body }: { title: string, body: string }) => {
+    return await api.createThread({ title: title, body: body });
   },
 );
 
@@ -62,6 +67,16 @@ export const threadsSlice = createSlice({
         state.threads = action.payload;
       })
       .addCase(fetchThreads.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(createThread.pending, (state) => { 
+        state.status = "loading";
+      })
+      .addCase(createThread.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.threads?.unshift(action.payload);
+      })
+      .addCase(createThread.rejected, (state) => {
         state.status = "failed";
       })
       .addCase(upVoteThread.fulfilled, (state, action) => {

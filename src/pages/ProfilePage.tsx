@@ -1,20 +1,8 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../states";
-import { fetchProfile } from "../states/profile/profileSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../states";
 
 function ProfilePage() {
-  const dispatch = useDispatch<AppDispatch>();
-  const { profile, status } = useSelector((state: RootState) => state.profile);
-
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchProfile());
-    }
-  }, [dispatch, status]);
-
-  if (status === "loading") return <p>Loading...</p>;
-  if (status === "failed") return <p>Failed to load profile</p>;
+  const { profile } = useSelector((state: RootState) => state.profile);
 
   return (
     <>

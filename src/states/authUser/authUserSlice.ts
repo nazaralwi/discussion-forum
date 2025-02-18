@@ -4,18 +4,20 @@ import api from "../../utils/api";
 
 interface AuthUserState {
   authUser: User | null;
+  token: string | null;
   status: "idle" | "loading" | "succeeded" | "failed";
 }
 
 const initialState: AuthUserState = {
   authUser: null,
+  token: null,
   status: "idle",
 };
 
-export const fetchAuthUser = createAsyncThunk(
+export const setAuthUser = createAsyncThunk(
   "authUser/fetchAuthUser",
-  async () => {
-    return await api.getOwnProfile();
+  async ({ email, password }: { email: string, password: string }) => {
+    return await api.login({ email, password });
   },
 );
 
@@ -25,14 +27,15 @@ export const authUserSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAuthUser.pending, (state) => {
+      .addCase(setAuthUser.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchAuthUser.fulfilled, (state, action) => {
+      .addCase(setAuthUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.authUser = action.payload;
+        state.token = action.payload;
+        api.putAccessToken(state.token);
       })
-      .addCase(fetchAuthUser.rejected, (state) => {
+      .addCase(setAuthUser.rejected, (state) => {
         state.status = "failed";
       });
   },
