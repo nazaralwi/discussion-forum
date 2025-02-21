@@ -1,22 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../states";
-import { fetchUserList } from "../states/userlist/userlistSlice";
+import { fetchUserList } from "../states/userlist/userListSlice";
 
 function UserListPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { userList, status } = useSelector(
-    (state: RootState) => state.userList,
-  );
+  const { userList, userListStatus } = useSelector((state: RootState) => state.userList);
 
   useEffect(() => {
-    if (status === "idle") {
+    if (userListStatus === "idle") {
       dispatch(fetchUserList());
     }
-  }, [dispatch, status]);
+  }, [dispatch, userListStatus]);
 
-  if (status === "loading") return <p>Loading...</p>;
-  if (status === "failed") return <p>Failed to load user list</p>;
+  if (userListStatus === "loading") return <p>Loading...</p>;
+  if (userListStatus === "failed") return <p>Failed to load user list</p>;
 
   return (
     <main className="flex flex-1 p-4 justify-center items-center">

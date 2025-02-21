@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../states";
+import { fetchRegister } from "../states/register/registerSlice";
 
 interface RegisterPageParams {
   registerSuccess: () => void;
@@ -9,6 +11,17 @@ function RegisterPage({ registerSuccess }: RegisterPageParams) {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
+  const { status } = useSelector((state: RootState) => state.register);
+
+  useEffect(() => {
+    if (status === "succeeded") {
+      registerSuccess();
+      setName("");
+      setEmail("");
+      setPassword("");
+    }
+  }, [dispatch, status, registerSuccess]);
 
   const onNameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -26,16 +39,12 @@ function RegisterPage({ registerSuccess }: RegisterPageParams) {
 
   const onRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      await api.register({ name, email, password });
-      registerSuccess();
-      setName("");
-      setEmail("");
-      setPassword("");
-    } catch (error) {
-      console.log((error as Error).message);
-    }
+    
+    dispatch(fetchRegister({ name, email, password }));
   };
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "failed") return <p>Failed to load leaderboards</p>;
 
   return (
     <main className="flex flex-1 p-4 justify-center items-center">

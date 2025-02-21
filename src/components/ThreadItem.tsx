@@ -1,13 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Thread } from "../utils/models";
+import { Thread, User } from "../utils/models";
 
 interface ThreadItemProps {
+  users: User[];
   thread: Thread;
   upVote: (id: string) => void;
   downVote: (id: string) => void;
 }
 
-function ThreadItem({ thread, upVote, downVote }: ThreadItemProps) {
+function ThreadItem({ users, thread, upVote, downVote }: ThreadItemProps) {
   const navigate = useNavigate();
 
   const onUpvoteClickHandler = async () => {
@@ -38,7 +39,8 @@ function ThreadItem({ thread, upVote, downVote }: ThreadItemProps) {
       <button onClick={onCommentClickHandler} className="ml-4">
         {thread.totalComments} Comments
       </button>
-      <p>{thread.ownerId}</p>
+      <p>{users.find((user) => user.id === thread.ownerId)?.name}</p>
+      <img src={users.find((user) => user.id === thread.ownerId)?.avatar} alt="Profile image" className="rounded-full" />
     </div>
   );
 }

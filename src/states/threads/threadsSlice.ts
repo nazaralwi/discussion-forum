@@ -6,7 +6,7 @@ import { RootState } from "..";
 interface ThreadState {
   threads: Thread[] | null;
   status: "idle" | "loading" | "succeeded" | "failed";
-}
+};
 
 const initialState: ThreadState = {
   threads: null,
@@ -19,6 +19,13 @@ export const fetchThreads = createAsyncThunk(
     return await api.getAllThreads();
   },
 );
+
+export const fetchProfile = createAsyncThunk(
+  "threads/fetchProfile",
+  async () => {
+    return await api.getAllUsers();
+  },
+)
 
 export const upVoteThread = createAsyncThunk(
   "threads/upVoteThread",

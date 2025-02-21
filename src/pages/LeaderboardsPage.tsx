@@ -5,9 +5,7 @@ import { fetchLeaderboards } from "../states/leaderboards/leaderboardsSlice";
 
 function LeaderboardPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { leaderboards, status } = useSelector(
-    (state: RootState) => state.leaderboards,
-  );
+  const { leaderboards, status } = useSelector((state: RootState) => state.leaderboards);
 
   useEffect(() => {
     if (status === "idle") {
@@ -27,6 +25,7 @@ function LeaderboardPage() {
               key={leaderboard.user.name}
               className="flex justify-between gap-2"
             >
+              <img src={leaderboard.user.avatar} alt="Profile image" className="rounded-full" />
               <h3>{leaderboard.user.email}</h3>
               <h3>{leaderboard.score}</h3>
             </div>

@@ -18,15 +18,15 @@
 
   - [ ] Menampilkan loading bar saat memuat data dari API.
 
-- [ ] **Informasi pada Halaman Daftar Thread**
+- [x] **Informasi pada Halaman Daftar Thread**
 
   - [x] Judul dari thread.
   - [x] Potongan dari body thread (opsional).
   - [x] Waktu pembuatan thread.
   - [x] Jumlah komentar.
-  - [ ] Informasi pembuat thread (Nama & Avatar opsional).
+  - [x] Informasi pembuat thread (Nama & Avatar opsional).
 
-- [ ] **Informasi pada Halaman Detail Thread**
+- [x] **Informasi pada Halaman Detail Thread**
   - [x] Judul dari thread.
   - [x] Body dari thread.
   - [x] Waktu pembuatan thread.
@@ -37,12 +37,9 @@
 
 ## ✅ Kriteria Utama 2: Bugs Highlighting
 
-- [ ] Menggunakan **ESLint** dalam proyek.
-- [ ] Menerapkan **Code Convention**:
-  - [ ] Dicoding Academy JavaScript Style Guide.
-  - [ ] AirBnB JavaScript Style Guide.
-  - [ ] Google JavaScript Style Guide.
-  - [ ] StandardJS Style Guide.
+- [x] Menggunakan **ESLint** dalam proyek.
+- [x] Menerapkan **Code Convention**:
+  - [x] Dicoding Academy JavaScript Style Guide.
 - [ ] Tidak ada **error** yang ditampilkan oleh ESLint.
 - [x] Menggunakan **React Strict Mode**.
 
@@ -52,8 +49,8 @@
 
 - [ ] **State Management**
 
-  - [ ] Seluruh stcoate aplikasi yang bersumber dari API disimpan pada Redux Store.
-  - [ ] Form input / controlled mponent boleh mengelola state-nya sendiri.
+  - [ ] Seluruh state aplikasi yang bersumber dari API disimpan pada Redux Store.
+  - [x] Form input / controlled component boleh mengelola state-nya sendiri.
 
 - [ ] **Code Structure**
   - [ ] Tidak ada pemanggilan REST API di dalam lifecycle atau efek komponen.
@@ -68,15 +65,15 @@
 
 - [x] Menambahkan tombol **vote** pada thread dan komentar.
 - [x] Menampilkan indikasi jika pengguna telah melakukan **up-vote/down-vote**.
-- [ ] Menerapkan **Optimistically Apply Actions** untuk meningkatkan UX.
+- [x] Menerapkan **Optimistically Apply Actions** untuk meningkatkan UX.
 - [x] Menampilkan jumlah votes pada thread dan komentar.
 
 ### 🔹 Saran 2: Menampilkan Leaderboard
 
 - [x] Membuat halaman **Leaderboard**.
-- [ ] Menampilkan informasi:
+- [x] Menampilkan informasi:
   - [x] Nama pengguna.
-  - [ ] Avatar pengguna.
+  - [x] Avatar pengguna.
   - [x] Score.
 
 ### 🔹 Saran 3: Filter Daftar Thread Berdasarkan Kategori

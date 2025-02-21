@@ -9,6 +9,7 @@ import {
   fetchThreads,
   upVoteThread,
 } from "../states/threads/threadsSlice";
+import { fetchUserList } from "../states/userlist/userListSlice";
 
 interface HomePageProps {
   isAuth: boolean;
@@ -17,10 +18,12 @@ interface HomePageProps {
 function HomePage({ isAuth }: HomePageProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { threads, status } = useSelector((state: RootState) => state.threads);
+  const { userList, userListStatus } = useSelector((state: RootState) => state.userList);
 
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchThreads());
+      dispatch(fetchUserList());
     }
   }, [dispatch, status]);
 
@@ -38,8 +41,8 @@ function HomePage({ isAuth }: HomePageProps) {
     dispatch(downVoteThread(id));
   };
 
-  if (status === "loading") return <p>Loading....</p>;
-  if (status === "failed") return <p>Failed to load threads</p>;
+  if (status === "loading" && userListStatus === "loading") return <p>Loading....</p>;
+  if (status === "failed" && userListStatus === "failed") return <p>Failed to load threads</p>;
 
   if (!isAuth) {
     return (
@@ -47,6 +50,7 @@ function HomePage({ isAuth }: HomePageProps) {
         <main className="flex flex-1 p-4 justify-center">
           <div className="flex flex-col gap-2">
             <ThreadList
+              users={userList ?? []}
               threads={threads ?? []}
               upVote={handleUpVote}
               downVote={handleDownVotes}
@@ -63,6 +67,7 @@ function HomePage({ isAuth }: HomePageProps) {
         <ThreadForm createThread={handleCreateThread} />
         <div className="flex flex-col gap-2">
           <ThreadList
+            users={userList ?? []}
             threads={threads ?? []}
             upVote={handleUpVote}
             downVote={handleDownVotes}

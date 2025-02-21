@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../states";
+import { assertString } from "../utils/asserts";
+import { fetchLogin } from "../states/login/loginSlice";
 
 interface LoginPageProps {
   loginSuccess: (token: string) => void;
@@ -9,6 +12,17 @@ interface LoginPageProps {
 function LoginPage({ loginSuccess }: LoginPageProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
+  const { token, status } = useSelector((state: RootState) => state.login);
+
+  useEffect(() => {
+    if (status === "succeeded") {
+      assertString(token);
+      loginSuccess(token);
+      setEmail("");
+      setPassword("");
+    }
+  }, [dispatch, token, loginSuccess, status]);
 
   const onEmailChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -22,15 +36,11 @@ function LoginPage({ loginSuccess }: LoginPageProps) {
 
   const onLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      const token: string = await api.login({ email, password });
-      loginSuccess(token);
-      setEmail("");
-      setPassword("");
-    } catch (error) {
-      console.log((error as Error).message);
-    }
+    dispatch(fetchLogin({ email, password }));
   };
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "failed") return <p>Failed to load leaderboards</p>;
 
   return (
     <main className="flex flex-1 p-4 justify-center items-center">
