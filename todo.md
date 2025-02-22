@@ -47,15 +47,15 @@
 
 ## ✅ Kriteria Utama 3: Arsitektur Aplikasi
 
-- [ ] **State Management**
+- [x] **State Management**
 
-  - [ ] Seluruh state aplikasi yang bersumber dari API disimpan pada Redux Store.
+  - [x] Seluruh state aplikasi yang bersumber dari API disimpan pada Redux Store.
   - [x] Form input / controlled component boleh mengelola state-nya sendiri.
 
-- [ ] **Code Structure**
-  - [ ] Tidak ada pemanggilan REST API di dalam lifecycle atau efek komponen.
-  - [ ] Memisahkan kode **UI** dengan **State** dalam folder yang terpisah.
-  - [ ] React component bersifat **modular** dan **reusable**.
+- [x] **Code Structure**
+  - [x] Tidak ada pemanggilan REST API di dalam lifecycle atau efek komponen.
+  - [x] Memisahkan kode **UI** dengan **State** dalam folder yang terpisah.
+  - [x] React component bersifat **modular** dan **reusable**.
 
 ---
 

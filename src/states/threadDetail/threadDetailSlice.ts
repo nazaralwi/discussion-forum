@@ -146,5 +146,6 @@ export const threadDetailSlice = createSlice({
 
         if (!hasDownvoted && state.thread) state.thread.comments = originalComments!;
       })
+      .addCase("RESET_STATE", () => initialState);
   }
 })

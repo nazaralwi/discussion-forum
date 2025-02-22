@@ -2,9 +2,10 @@ import { useState } from "react";
 
 interface CommentFormProps {
   createComment: (content: string) => void;
+  className?: string
 }
 
-function CommentForm({ createComment }: CommentFormProps) {
+function CommentForm({ createComment, className }: CommentFormProps) {
   const [content, setContent] = useState<string>("");
 
   const onContentChangeHandler = (
@@ -23,7 +24,7 @@ function CommentForm({ createComment }: CommentFormProps) {
     <>
       <form
         onSubmit={onCreateComment}
-        className="max-w-md w-full bg-white p-6 rounded-lg border-2 border-gray-300"
+        className={`w-full bg-white p-6 rounded-lg border-2 border-gray-300 ${className}`}
       >
         <h1 className="text-base/7 font-semibold text-gray-900">
           Create Thread

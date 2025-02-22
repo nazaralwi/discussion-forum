@@ -17,7 +17,8 @@ function LeaderboardPage() {
   if (status === "failed") return <p>Failed to load leaderboards</p>;
 
   return (
-    <main className="flex flex-1 p-4 justify-center items-center">
+    <main className="w-1/2 mx-auto flex-1 p-4 justify-center items-center">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Leaderboards</h1>
       <div className="flex flex-col gap-4">
         {(leaderboards?.length ?? 0 > 0) ? (
           leaderboards?.map((leaderboard) => (
@@ -25,8 +26,10 @@ function LeaderboardPage() {
               key={leaderboard.user.name}
               className="flex justify-between gap-2"
             >
-              <img src={leaderboard.user.avatar} alt="Profile image" className="rounded-full" />
-              <h3>{leaderboard.user.email}</h3>
+              <div className="flex items-center gap-2">
+                <img src={leaderboard.user.avatar} alt="Profile image" className="rounded-full" />
+                <h3>{leaderboard.user.email}</h3>
+              </div>
               <h3>{leaderboard.score}</h3>
             </div>
           ))

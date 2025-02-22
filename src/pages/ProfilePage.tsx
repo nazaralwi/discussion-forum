@@ -6,7 +6,7 @@ function ProfilePage() {
 
   return (
     <>
-      <main className="flex flex-1 p-4 justify-center">
+      <main className="w-1/2 mx-auto flex-1 p-4 justify-center items-center">
         <div className="flex flex-col gap-2">
           <h3>{profile?.name}</h3>
           <p>{profile?.email}</p>

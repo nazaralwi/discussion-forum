@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 interface ThreadFromProps {
   createThread: (title: string, body: string) => void;
+  className?: string;
 }
 
-function ThreadForm({ createThread }: ThreadFromProps) {
+function ThreadForm({ createThread, className }: ThreadFromProps) {
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
 
@@ -27,7 +28,7 @@ function ThreadForm({ createThread }: ThreadFromProps) {
     <>
       <form
         onSubmit={onCreateThread}
-        className="max-w-md w-full bg-white p-6 rounded-lg border-2 border-gray-300"
+        className={`max-w-md w-full bg-white p-6 rounded-lg border-2 border-gray-300 ${className}`}
       >
         <h1 className="text-base/7 font-semibold text-gray-900">
           Create Thread

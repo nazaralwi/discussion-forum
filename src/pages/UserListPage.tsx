@@ -17,7 +17,7 @@ function UserListPage() {
   if (userListStatus === "failed") return <p>Failed to load user list</p>;
 
   return (
-    <main className="flex flex-1 p-4 justify-center items-center">
+    <main className="w-1/2 mx-auto flex-1 p-4 justify-center items-center">
       <div className="leaderboards-container">
         {(userList?.length ?? 0 > 0) ? (
           userList?.map((user) => (

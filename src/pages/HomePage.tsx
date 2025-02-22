@@ -63,8 +63,8 @@ function HomePage({ isAuth }: HomePageProps) {
 
   return (
     <>
-      <main className="flex flex-1 p-4 justify-center">
-        <ThreadForm createThread={handleCreateThread} />
+      <main className="w-1/2 mx-auto flex flex-1 p-4 flex-col items-center justify-center">
+        <ThreadForm createThread={handleCreateThread} className="mb-4" />
         <div className="flex flex-col gap-2">
           <ThreadList
             users={userList ?? []}
