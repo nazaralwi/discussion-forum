@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../utils/api";
+import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 interface LoginState {
   token: string | null;
@@ -13,9 +14,19 @@ const initialState: LoginState = {
 
 export const fetchLogin = createAsyncThunk(
   "auth/login",
-  async ({ email, password }: { email: string; password: string }) => {
-    const token: string = await api.login({ email, password });
-    return token;
+  async (
+    { email, password }: { email: string; password: string },
+    { dispatch, rejectWithValue },
+  ) => {
+    try {
+      dispatch(showLoading());
+      const token: string = await api.login({ email, password });
+      dispatch(hideLoading());
+      return token;
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 

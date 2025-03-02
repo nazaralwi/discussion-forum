@@ -17,8 +17,6 @@ import {
 } from "../states/threadDetail/threadDetailSlice";
 import DOMPurify from "dompurify";
 import { postedAt } from "../utils/formatter";
-import LoadIndicator from "../components/LoadIndicator";
-import ErrorMessage from "../components/ErrorMessage";
 import { User } from "../utils/models";
 import {
   AiFillDislike,
@@ -95,10 +93,6 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
   const createComment = async (content: string) => {
     dispatch(createComment1({ threadId: id, commentContent: content }));
   };
-
-  if (threadDetailState.status === "loading") return <LoadIndicator />;
-  if (threadDetailState.status === "failed")
-    return <ErrorMessage message="Failed to load thread detail" />;
 
   return (
     <>

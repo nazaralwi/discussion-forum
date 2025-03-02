@@ -10,8 +10,6 @@ import {
   neutralizeVoteThread,
   upVoteThread,
 } from "../states/threads/threadsSlice";
-import LoadIndicator from "../components/LoadIndicator";
-import ErrorMessage from "../components/ErrorMessage";
 import { User } from "../utils/models";
 
 interface HomePageProps {
@@ -45,10 +43,6 @@ function HomePage({ isAuth, profile }: HomePageProps) {
   const handleNeutralizeVoteThread = async (id: string) => {
     dispatch(neutralizeVoteThread(id));
   };
-
-  if (threadState.status === "loading") return <LoadIndicator />;
-  if (threadState.status === "failed")
-    return <ErrorMessage message="Failed to load threads" />;
 
   if (!isAuth) {
     return (

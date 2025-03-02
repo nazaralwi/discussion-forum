@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Thread } from "../../utils/models";
 import api from "../../utils/api";
 import { RootState } from "..";
+import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 interface ThreadState {
   threads: Thread[] | null;
@@ -15,61 +16,99 @@ const initialState: ThreadState = {
 
 export const fetchThreads = createAsyncThunk(
   "threads/fetchThreads",
-  async () => {
-    return await api.getAllThreads();
-  },
-);
-
-export const fetchProfile = createAsyncThunk(
-  "threads/fetchProfile",
-  async () => {
-    return await api.getAllUsers();
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(showLoading());
+      const response = await api.getAllThreads();
+      dispatch(hideLoading());
+      return response;
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const upVoteThread = createAsyncThunk(
   "threads/upVoteThread",
-  async (id: string, { getState }) => {
+  async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.upVoteThread(id);
-    return { threadId: id, userId: profile.id };
+    try {
+      dispatch(showLoading());
+      await api.upVoteThread(id);
+      dispatch(hideLoading());
+      return { threadId: id, userId: profile.id };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const downVoteThread = createAsyncThunk(
   "threads/downVoteThread",
-  async (id: string, { getState }) => {
+  async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.downVoteThread(id);
-    return { threadId: id, userId: profile.id };
+    try {
+      dispatch(showLoading());
+      await api.downVoteThread(id);
+      dispatch(hideLoading());
+      return { threadId: id, userId: profile.id };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const neutralizeVoteThread = createAsyncThunk(
   "threads/neutralizeVoteThread",
-  async (id: string, { getState }) => {
+  async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.neutralizeVoteThread(id);
-    return { threadId: id, userId: profile.id };
+    try {
+      dispatch(showLoading());
+      await api.neutralizeVoteThread(id);
+      dispatch(hideLoading());
+      return { threadId: id, userId: profile.id };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const createThread = createAsyncThunk(
   "threads/createThread",
-  async ({ title, body }: { title: string; body: string }) => {
-    return await api.createThread({ title: title, body: body });
+  async (
+    { title, body }: { title: string; body: string },
+    { getState, dispatch, rejectWithValue },
+  ) => {
+    const state = getState() as RootState;
+    const profile = state.profile.profile;
+
+    if (!profile) throw new Error("User not authenticated");
+
+    try {
+      dispatch(showLoading());
+      const response = await api.createThread({ title: title, body: body });
+      dispatch(hideLoading());
+      return response;
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 

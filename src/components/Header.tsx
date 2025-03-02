@@ -14,7 +14,6 @@ function Header({ isAuth, logoutSuccess }: HeaderParams) {
         </h1>
         <nav className="flex gap-2 justify-center items-center">
           <Link to="/leaderboards">Leaderboards</Link>
-          <Link to="/users">Users</Link>
           <Link to="/login">Login</Link>
         </nav>
       </header>
@@ -28,7 +27,6 @@ function Header({ isAuth, logoutSuccess }: HeaderParams) {
       </h1>
       <nav className="flex gap-2 justify-center items-center">
         <Link to="/leaderboards">Leaderboards</Link>
-        <Link to="/users">Users</Link>
         <Link to="/profile">Profile</Link>
         <button onClick={logoutSuccess}>Logout</button>
       </nav>

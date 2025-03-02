@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../utils/api";
+import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 interface RegisterState {
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -11,16 +12,27 @@ const initialState: RegisterState = {
 
 export const fetchRegister = createAsyncThunk(
   "auth/register",
-  async ({
-    name,
-    email,
-    password,
-  }: {
-    name: string;
-    email: string;
-    password: string;
-  }) => {
-    return await api.register({ name, email, password });
+  async (
+    {
+      name,
+      email,
+      password,
+    }: {
+      name: string;
+      email: string;
+      password: string;
+    },
+    { dispatch, rejectWithValue },
+  ) => {
+    try {
+      dispatch(showLoading());
+      const response = await api.register({ name, email, password });
+      dispatch(hideLoading());
+      return response;
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 

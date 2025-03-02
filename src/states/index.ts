@@ -7,6 +7,7 @@ import { authUserSlice } from "./authUser/authUserSlice";
 import { threadDetailSlice } from "./threadDetail/threadDetailSlice";
 import { loginSlice } from "./login/loginSlice";
 import { registerSlice } from "./register/registerSlice";
+import { loadingBarReducer } from "react-redux-loading-bar";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     profile: profileSlice.reducer,
     authUser: authUserSlice.reducer,
     threadDetail: threadDetailSlice.reducer,
+    loadingBar: loadingBarReducer,
   },
 });
 

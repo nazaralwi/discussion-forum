@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ThreadDetail } from "../../utils/models";
 import api from "../../utils/api";
 import { RootState } from "..";
+import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 interface ThreadDetailState {
   thread: ThreadDetail | null;
@@ -15,47 +16,76 @@ const initialState: ThreadDetailState = {
 
 export const fetchThreadDetail = createAsyncThunk(
   "threads/fetchThreadDetail",
-  async (id: string) => {
-    return await api.getThreadDetail(id);
+  async (id: string, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(showLoading());
+      const response = await api.getThreadDetail(id);
+      dispatch(hideLoading());
+      return response;
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const upVoteThread = createAsyncThunk(
   "threads/upVoteThread",
-  async (id: string, { getState }) => {
+  async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.upVoteThread(id);
-    return { userId: profile.id };
+    try {
+      dispatch(showLoading());
+      await api.upVoteThread(id);
+      dispatch(hideLoading());
+      return { userId: profile.id };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const downVoteThread = createAsyncThunk(
   "threads/downVoteThread",
-  async (id: string, { getState }) => {
+  async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.downVoteThread(id);
-    return { userId: profile.id };
+    try {
+      dispatch(showLoading());
+      await api.downVoteThread(id);
+      dispatch(hideLoading());
+      return { userId: profile.id };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
 export const neutralizeVoteThread = createAsyncThunk(
   "threads/neutralizeVoteThread",
-  async (id: string, { getState }) => {
+  async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.neutralizeVoteThread(id);
-    return { userId: profile.id };
+    try {
+      dispatch(showLoading());
+      await api.neutralizeVoteThread(id);
+      dispatch(hideLoading());
+      return { userId: profile.id };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
@@ -63,15 +93,22 @@ export const upVoteComment = createAsyncThunk(
   "threads/upVoteComment",
   async (
     { threadId, commentId }: { threadId: string; commentId: string },
-    { getState },
+    { getState, dispatch, rejectWithValue },
   ) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.upVoteComment(threadId, commentId);
-    return { commentId, profile };
+    try {
+      dispatch(showLoading());
+      await api.upVoteComment(threadId, commentId);
+      dispatch(hideLoading());
+      return { commentId, profile };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
@@ -79,15 +116,22 @@ export const downVoteComment = createAsyncThunk(
   "threads/downVoteComment",
   async (
     { threadId, commentId }: { threadId: string; commentId: string },
-    { getState },
+    { getState, dispatch, rejectWithValue },
   ) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.downVoteComment(threadId, commentId);
-    return { commentId, profile };
+    try {
+      dispatch(showLoading());
+      await api.downVoteComment(threadId, commentId);
+      dispatch(hideLoading());
+      return { commentId, profile };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
@@ -95,15 +139,22 @@ export const neutralizeVoteComment = createAsyncThunk(
   "threads/neutralizeVoteComment",
   async (
     { threadId, commentId }: { threadId: string; commentId: string },
-    { getState },
+    { getState, dispatch, rejectWithValue },
   ) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    await api.neutralizeVoteComment(threadId, commentId);
-    return { commentId, profile };
+    try {
+      dispatch(showLoading());
+      await api.neutralizeVoteComment(threadId, commentId);
+      dispatch(hideLoading());
+      return { commentId, profile };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
@@ -111,15 +162,22 @@ export const createComment1 = createAsyncThunk(
   "threads/createComment1",
   async (
     { threadId, commentContent }: { threadId: string; commentContent: string },
-    { getState },
+    { getState, dispatch, rejectWithValue },
   ) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error("User not authenticated");
 
-    const response = await api.createComment(threadId, commentContent);
-    return { threadId, comment: response, profile: profile.id };
+    try {
+      dispatch(showLoading());
+      const response = await api.createComment(threadId, commentContent);
+      dispatch(hideLoading());
+      return { threadId, comment: response, profile: profile.id };
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../../utils/models";
 import api from "../../utils/api";
+import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 interface UserListState {
   userList: User[] | null;
@@ -14,8 +15,16 @@ const initialState: UserListState = {
 
 export const fetchUserList = createAsyncThunk(
   "userList/fetchUserList",
-  async () => {
-    return await api.getAllUsers();
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(showLoading());
+      const response = await api.getAllUsers();
+      dispatch(hideLoading());
+      return response;
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 

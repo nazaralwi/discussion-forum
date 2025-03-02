@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../states";
 import { fetchRegister } from "../states/register/registerSlice";
-import LoadIndicator from "../components/LoadIndicator";
-import ErrorMessage from "../components/ErrorMessage";
 
 interface RegisterPageParams {
   registerSuccess: () => void;
@@ -44,9 +42,6 @@ function RegisterPage({ registerSuccess }: RegisterPageParams) {
 
     dispatch(fetchRegister({ name, email, password }));
   };
-
-  if (status === "loading") return <LoadIndicator />;
-  if (status === "failed") return <ErrorMessage message="Failed to register" />;
 
   return (
     <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 justify-center items-center">

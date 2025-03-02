@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../states";
 import { fetchLeaderboards } from "../states/leaderboards/leaderboardsSlice";
-import ErrorMessage from "../components/ErrorMessage";
-import LoadIndicator from "../components/LoadIndicator";
 
 function LeaderboardPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,10 +14,6 @@ function LeaderboardPage() {
       dispatch(fetchLeaderboards());
     }
   }, [dispatch, status]);
-
-  if (status === "loading") return <LoadIndicator />;
-  if (status === "failed")
-    return <ErrorMessage message="Failed to load leaderboards" />;
 
   return (
     <main className="w-full lg:w-1/2 lg:mx-auto flex-1 p-4 justify-center items-center">

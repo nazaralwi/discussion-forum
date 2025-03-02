@@ -14,9 +14,9 @@
   - [x] Pengguna dapat membuat thread.
   - [x] Pengguna dapat menambahkan komentar dalam thread.
 
-- [ ] **UI/UX**
+- [x] **UI/UX**
 
-  - [ ] Menampilkan loading bar saat memuat data dari API.
+  - [x] Menampilkan loading bar saat memuat data dari API.
 
 - [x] **Informasi pada Halaman Daftar Thread**
 

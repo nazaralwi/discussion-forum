@@ -8,9 +8,8 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./states";
 import { fetchProfile } from "./states/profile/profileSlice";
-import LoadIndicator from "./components/LoadIndicator";
-import ErrorMessage from "./components/ErrorMessage";
 import { fetchUserList } from "./states/userlist/userListSlice";
+import LoadingBar from "react-redux-loading-bar";
 
 function App() {
   const [token, setToken] = useState<string | null>(api.getAccessToken());
@@ -44,13 +43,9 @@ function App() {
     navigate("login");
   };
 
-  if (profileState.status === "loading" && userListState.status === "loading")
-    return <LoadIndicator />;
-  if (profileState.status === "failed" && userListState.status === "failed")
-    return <ErrorMessage message="Failed to load data" />;
-
   return (
     <>
+      <LoadingBar />
       <Header isAuth={isAuth} logoutSuccess={onLogoutSuccess} />
       <Main
         isAuth={isAuth}

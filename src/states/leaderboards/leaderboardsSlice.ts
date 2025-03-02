@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Leaderboard } from "../../utils/models";
 import api from "../../utils/api";
+import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 interface LeaderboardsState {
   leaderboards: Leaderboard[] | null;
@@ -14,8 +15,16 @@ const initialState: LeaderboardsState = {
 
 export const fetchLeaderboards = createAsyncThunk(
   "leaderboards/fetchLeaderboards",
-  async () => {
-    return await api.getAllLeaderboards();
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(showLoading());
+      const response = await api.getAllLeaderboards();
+      dispatch(hideLoading());
+      return response;
+    } catch (error) {
+      dispatch(hideLoading());
+      return rejectWithValue(error);
+    }
   },
 );
 
