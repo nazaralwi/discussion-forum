@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../states";
 import { assertString } from "../utils/asserts";
 import { fetchLogin } from "../states/login/loginSlice";
+import LoadIndicator from "../components/LoadIndicator";
+import ErrorMessage from "../components/ErrorMessage";
 
 interface LoginPageProps {
   loginSuccess: (token: string) => void;
@@ -39,8 +41,8 @@ function LoginPage({ loginSuccess }: LoginPageProps) {
     dispatch(fetchLogin({ email, password }));
   };
 
-  if (status === "loading") return <p>Loading...</p>;
-  if (status === "failed") return <p>Failed to load leaderboards</p>;
+  if (status === "loading") return <LoadIndicator />;
+  if (status === "failed") return <ErrorMessage message="Failed to login" />;
 
   return (
     <main className="flex flex-1 p-4 justify-center items-center">

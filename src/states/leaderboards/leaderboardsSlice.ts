@@ -29,8 +29,8 @@ export const leaderboardsSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchLeaderboards.fulfilled, (state, action) => {
-        state.status = "succeeded";
         state.leaderboards = action.payload;
+        state.status = "succeeded";
       })
       .addCase(fetchLeaderboards.rejected, (state) => {
         state.status = "failed";

@@ -1,23 +1,11 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../states";
-import { fetchUserList } from "../states/userlist/userListSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../states";
 
 function UserListPage() {
-  const dispatch = useDispatch<AppDispatch>();
-  const { userList, userListStatus } = useSelector((state: RootState) => state.userList);
-
-  useEffect(() => {
-    if (userListStatus === "idle") {
-      dispatch(fetchUserList());
-    }
-  }, [dispatch, userListStatus]);
-
-  if (userListStatus === "loading") return <p>Loading...</p>;
-  if (userListStatus === "failed") return <p>Failed to load user list</p>;
+  const { userList } = useSelector((state: RootState) => state.userList);
 
   return (
-    <main className="w-1/2 mx-auto flex-1 p-4 justify-center items-center">
+    <main className="w-full lg:w-1/2 lg:mx-auto flex-1 p-4 justify-center items-center">
       <div className="leaderboards-container">
         {(userList?.length ?? 0 > 0) ? (
           userList?.map((user) => (

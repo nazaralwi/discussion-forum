@@ -7,53 +7,60 @@ import {
   createThread,
   downVoteThread,
   fetchThreads,
+  neutralizeVoteThread,
   upVoteThread,
 } from "../states/threads/threadsSlice";
-import { fetchUserList } from "../states/userlist/userListSlice";
+import LoadIndicator from "../components/LoadIndicator";
+import ErrorMessage from "../components/ErrorMessage";
+import { User } from "../utils/models";
 
 interface HomePageProps {
   isAuth: boolean;
+  profile?: User;
 }
 
-function HomePage({ isAuth }: HomePageProps) {
+function HomePage({ isAuth, profile }: HomePageProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const { threads, status } = useSelector((state: RootState) => state.threads);
-  const { userList, userListStatus } = useSelector((state: RootState) => state.userList);
+  const threadState = useSelector((state: RootState) => state.threads);
+  const { userList } = useSelector((state: RootState) => state.userList);
 
   useEffect(() => {
-    if (status === "idle") {
+    if (threadState.status === "idle") {
       dispatch(fetchThreads());
-      dispatch(fetchUserList());
     }
-  }, [dispatch, status]);
+  }, [dispatch, threadState.status]);
 
   const handleCreateThread = async (title: string, body: string) => {
     dispatch(createThread({ title: title, body: body }));
   };
 
   const handleUpVote = async (id: string) => {
-    console.log("handleUpVote");
     dispatch(upVoteThread(id));
   };
 
   const handleDownVotes = async (id: string) => {
-    console.log("handleDownVote");
     dispatch(downVoteThread(id));
   };
 
-  if (status === "loading" && userListStatus === "loading") return <p>Loading....</p>;
-  if (status === "failed" && userListStatus === "failed") return <p>Failed to load threads</p>;
+  const handleNeutralizeVoteThread = async (id: string) => {
+    dispatch(neutralizeVoteThread(id));
+  };
+
+  if (threadState.status === "loading") return <LoadIndicator />;
+  if (threadState.status === "failed")
+    return <ErrorMessage message="Failed to load threads" />;
 
   if (!isAuth) {
     return (
       <>
-        <main className="flex flex-1 p-4 justify-center">
+        <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 justify-center">
           <div className="flex flex-col gap-2">
             <ThreadList
               users={userList ?? []}
-              threads={threads ?? []}
+              threads={threadState.threads ?? []}
               upVote={handleUpVote}
               downVote={handleDownVotes}
+              neutralizeVoteThread={handleNeutralizeVoteThread}
             />
           </div>
         </main>
@@ -63,14 +70,16 @@ function HomePage({ isAuth }: HomePageProps) {
 
   return (
     <>
-      <main className="w-1/2 mx-auto flex flex-1 p-4 flex-col items-center justify-center">
+      <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-center">
         <ThreadForm createThread={handleCreateThread} className="mb-4" />
         <div className="flex flex-col gap-2">
           <ThreadList
             users={userList ?? []}
-            threads={threads ?? []}
+            threads={threadState.threads ?? []}
+            profile={profile}
             upVote={handleUpVote}
             downVote={handleDownVotes}
+            neutralizeVoteThread={handleNeutralizeVoteThread}
           />
         </div>
       </main>

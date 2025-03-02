@@ -207,6 +207,32 @@ const api = (() => {
     return vote;
   }
 
+  async function neutralizeVoteThread(threadId: string): Promise<Vote> {
+    const response = await _fetchWithAuth(
+      `${BASE_URL}/threads/${threadId}/neutral-vote`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    const responseJSON: UpvoteThreadResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== "success") {
+      throw new Error(message);
+    }
+
+    const {
+      data: { vote },
+    } = responseJSON;
+
+    return vote;
+  }
+
   async function upVoteComment(
     threadId: string,
     commentId: string,
@@ -242,6 +268,35 @@ const api = (() => {
   ): Promise<Vote> {
     const response = await _fetchWithAuth(
       `${BASE_URL}/threads/${threadId}/comments/${commentId}/down-vote`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    const responseJSON: UpvoteThreadResponse = await response.json();
+
+    const { status, message } = responseJSON;
+
+    if (status !== "success") {
+      throw new Error(message);
+    }
+
+    const {
+      data: { vote },
+    } = responseJSON;
+
+    return vote;
+  }
+
+  async function neutralizeVoteComment(
+    threadId: string,
+    commentId: string,
+  ): Promise<Vote> {
+    const response = await _fetchWithAuth(
+      `${BASE_URL}/threads/${threadId}/comments/${commentId}/neutral-vote`,
       {
         method: "POST",
         headers: {
@@ -377,8 +432,10 @@ const api = (() => {
     createThread,
     upVoteThread,
     downVoteThread,
+    neutralizeVoteThread,
     upVoteComment,
     downVoteComment,
+    neutralizeVoteComment,
     createComment,
     getAllThreads,
     getAllUsers,

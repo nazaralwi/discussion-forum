@@ -3,17 +3,25 @@ import api from "../../utils/api";
 
 interface RegisterState {
   status: "idle" | "loading" | "succeeded" | "failed";
-};
+}
 
 const initialState: RegisterState = {
-  status: "idle"
+  status: "idle",
 };
 
 export const fetchRegister = createAsyncThunk(
   "auth/register",
-  async ({ name, email, password }: { name: string, email: string, password: string }) => {
+  async ({
+    name,
+    email,
+    password,
+  }: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
     return await api.register({ name, email, password });
-  }
+  },
 );
 
 export const registerSlice = createSlice({
@@ -30,6 +38,6 @@ export const registerSlice = createSlice({
       })
       .addCase(fetchRegister.rejected, (state) => {
         state.status = "failed";
-      })
-  }
-})
+      });
+  },
+});

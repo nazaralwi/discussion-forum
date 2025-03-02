@@ -16,7 +16,7 @@ const initialState: AuthUserState = {
 
 export const setAuthUser = createAsyncThunk(
   "authUser/fetchAuthUser",
-  async ({ email, password }: { email: string, password: string }) => {
+  async ({ email, password }: { email: string; password: string }) => {
     return await api.login({ email, password });
   },
 );
@@ -31,9 +31,9 @@ export const authUserSlice = createSlice({
         state.status = "loading";
       })
       .addCase(setAuthUser.fulfilled, (state, action) => {
-        state.status = "succeeded";
         state.token = action.payload;
         api.putAccessToken(state.token);
+        state.status = "succeeded";
       })
       .addCase(setAuthUser.rejected, (state) => {
         state.status = "failed";

@@ -4,12 +4,12 @@ import api from "../../utils/api";
 
 interface UserListState {
   userList: User[] | null;
-  userListStatus: "idle" | "loading" | "succeeded" | "failed";
+  status: "idle" | "loading" | "succeeded" | "failed";
 }
 
 const initialState: UserListState = {
   userList: null,
-  userListStatus: "idle",
+  status: "idle",
 };
 
 export const fetchUserList = createAsyncThunk(
@@ -26,14 +26,14 @@ export const userListSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserList.pending, (state) => {
-        state.userListStatus = "loading";
+        state.status = "loading";
       })
       .addCase(fetchUserList.fulfilled, (state, action) => {
-        state.userListStatus = "succeeded";
+        state.status = "succeeded";
         state.userList = action.payload;
       })
       .addCase(fetchUserList.rejected, (state) => {
-        state.userListStatus = "failed";
+        state.status = "failed";
       });
   },
 });

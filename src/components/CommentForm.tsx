@@ -2,7 +2,7 @@ import { useState } from "react";
 
 interface CommentFormProps {
   createComment: (content: string) => void;
-  className?: string
+  className?: string;
 }
 
 function CommentForm({ createComment, className }: CommentFormProps) {

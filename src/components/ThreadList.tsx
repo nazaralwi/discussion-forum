@@ -4,11 +4,20 @@ import ThreadItem from "./ThreadItem";
 interface ThreadListProps {
   users: User[];
   threads: Thread[];
+  profile?: User;
   upVote: (id: string) => void;
   downVote: (id: string) => void;
+  neutralizeVoteThread: (id: string) => void;
 }
 
-function ThreadList({ users, threads, upVote, downVote }: ThreadListProps) {
+function ThreadList({
+  users,
+  threads,
+  profile,
+  upVote,
+  downVote,
+  neutralizeVoteThread,
+}: ThreadListProps) {
   return (
     <>
       {threads.length > 0 ? (
@@ -16,9 +25,11 @@ function ThreadList({ users, threads, upVote, downVote }: ThreadListProps) {
           <ThreadItem
             key={thread.id}
             users={users}
+            profile={profile}
             thread={thread}
             upVote={upVote}
             downVote={downVote}
+            neutralizeVoteThread={neutralizeVoteThread}
           />
         ))
       ) : (

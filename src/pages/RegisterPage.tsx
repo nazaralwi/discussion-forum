@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../states";
 import { fetchRegister } from "../states/register/registerSlice";
+import LoadIndicator from "../components/LoadIndicator";
+import ErrorMessage from "../components/ErrorMessage";
 
 interface RegisterPageParams {
   registerSuccess: () => void;
@@ -39,15 +41,15 @@ function RegisterPage({ registerSuccess }: RegisterPageParams) {
 
   const onRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     dispatch(fetchRegister({ name, email, password }));
   };
 
-  if (status === "loading") return <p>Loading...</p>;
-  if (status === "failed") return <p>Failed to load leaderboards</p>;
+  if (status === "loading") return <LoadIndicator />;
+  if (status === "failed") return <ErrorMessage message="Failed to register" />;
 
   return (
-    <main className="flex flex-1 p-4 justify-center items-center">
+    <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 justify-center items-center">
       <form
         onSubmit={onRegister}
         className="max-w-md w-full bg-white p-6 rounded-lg border-2 border-gray-300"

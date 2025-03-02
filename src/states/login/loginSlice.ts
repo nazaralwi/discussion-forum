@@ -4,19 +4,19 @@ import api from "../../utils/api";
 interface LoginState {
   token: string | null;
   status: "idle" | "loading" | "succeeded" | "failed";
-};
+}
 
 const initialState: LoginState = {
   token: null,
-  status: "idle"
+  status: "idle",
 };
 
 export const fetchLogin = createAsyncThunk(
   "auth/login",
-  async ({ email, password }: { email: string, password: string }) => {
+  async ({ email, password }: { email: string; password: string }) => {
     const token: string = await api.login({ email, password });
     return token;
-  }
+  },
 );
 
 export const loginSlice = createSlice({
@@ -29,12 +29,12 @@ export const loginSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchLogin.fulfilled, (state, action) => {
-        state.status = "succeeded";
         state.token = action.payload;
         api.putAccessToken(action.payload);
+        state.status = "succeeded";
       })
       .addCase(fetchLogin.rejected, (state) => {
         state.status = "failed";
-      })
-  }
-})
+      });
+  },
+});
