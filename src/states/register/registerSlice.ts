@@ -45,7 +45,7 @@ export const registerSlice = createSlice({
       .addCase(fetchRegister.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchRegister.fulfilled, (state, action) => {
+      .addCase(fetchRegister.fulfilled, (state) => {
         state.status = "succeeded";
       })
       .addCase(fetchRegister.rejected, (state) => {

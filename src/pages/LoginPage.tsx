@@ -98,7 +98,7 @@ function LoginPage({ loginSuccess }: LoginPageProps) {
         </div>
         <div className="mt-2 flex justify-end">
           <p>
-            Didn't have account?{" "}
+            Didn&apos;t have account?{" "}
             <Link className="text-indigo-600" to="/register">
               Register here
             </Link>

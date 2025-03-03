@@ -15,7 +15,6 @@ function App() {
   const [token, setToken] = useState<string | null>(api.getAccessToken());
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const profileState = useSelector((state: RootState) => state.profile);
-  const userListState = useSelector((state: RootState) => state.userList);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
