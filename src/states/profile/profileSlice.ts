@@ -18,9 +18,9 @@ export const fetchProfile = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(showLoading());
-      const response = await api.getOwnProfile();
+      const user = await api.getOwnProfile();
       dispatch(hideLoading());
-      return response;
+      return user;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);

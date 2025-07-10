@@ -49,10 +49,6 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
 
   useEffect(() => {
     dispatch(fetchThreadDetail(id));
-
-    return () => {
-      dispatch(resetThreadDetail());
-    };
   }, [id, dispatch]);
 
   const onUpvoteThreadClickHandler = async () => {

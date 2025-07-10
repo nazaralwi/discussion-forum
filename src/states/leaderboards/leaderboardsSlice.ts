@@ -18,9 +18,9 @@ export const fetchLeaderboards = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(showLoading());
-      const response = await api.getAllLeaderboards();
+      const leaderboards = await api.getAllLeaderboards();
       dispatch(hideLoading());
-      return response;
+      return leaderboards;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);

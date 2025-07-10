@@ -18,9 +18,9 @@ export const fetchUserList = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(showLoading());
-      const response = await api.getAllUsers();
+      const users = await api.getAllUsers();
       dispatch(hideLoading());
-      return response;
+      return users;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
