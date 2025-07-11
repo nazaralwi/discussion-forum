@@ -13,7 +13,6 @@ import {
   neutralizeVoteThread,
   neutralizeVoteComment,
   upVoteComment,
-  resetThreadDetail,
 } from "../states/threadDetail/threadDetailSlice";
 import DOMPurify from "dompurify";
 import { postedAt } from "../utils/formatter";
