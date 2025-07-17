@@ -51,7 +51,7 @@ function ThreadItem({
   };
 
   return (
-    <div className="p-2 border-2 rounded-sm">
+    <div id="thread-item" className="p-2 border-2 rounded-sm">
       <Link to={`/threads/${thread.id}`}>
         <h3 className="text-2xl font-bold text-gray-900 mb-4">
           {thread.title}

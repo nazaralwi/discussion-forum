@@ -1,4 +1,17 @@
 {
+  "compilerOptions": {
+    "jsx": "react-jsx",                // ✅ untuk React 17+
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "strict": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

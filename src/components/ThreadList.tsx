@@ -40,3 +40,4 @@ function ThreadList({
 }
 
 export default ThreadList;
+export type { ThreadListProps };

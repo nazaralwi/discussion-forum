@@ -4,7 +4,7 @@ import api from "../../utils/api";
 import { RootState } from "..";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 
-interface ThreadState {
+export interface ThreadState {
   threads: Thread[] | null;
   status: "idle" | "loading" | "succeeded" | "failed";
 }
@@ -173,3 +173,5 @@ export const threadsSlice = createSlice({
       });
   },
 });
+
+export default threadsSlice.reducer;

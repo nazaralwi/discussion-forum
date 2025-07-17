@@ -276,5 +276,3 @@ export const threadDetailSlice = createSlice({
       });
   },
 });
-
-export const { resetThreadDetail } = threadDetailSlice.actions;
