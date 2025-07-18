@@ -1,9 +1,4 @@
-/**
- * - Threads Thunk
- *  - dispatches fulfilled when successful
- *  - dispatches rejected when failing
- */
-
+import { describe, it, expect, vi } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import threadsReducer, { fetchThreads } from './threadsSlice';
 import * as apiModule from '../../utils/api';
@@ -24,7 +19,7 @@ describe('fetchThreads thunk', () => {
       },
     ];
 
-    const spy = jest.spyOn(apiModule.default, 'getAllThreads').mockResolvedValueOnce(mockThreads);
+    const spy = vi.spyOn(apiModule.default, 'getAllThreads').mockResolvedValueOnce(mockThreads);
 
     const store = configureStore({
       reducer: {
@@ -42,7 +37,7 @@ describe('fetchThreads thunk', () => {
 
   it('dispatches rejected when failing', async () => {
     const anError = new Error("an error");
-    const spy = jest.spyOn(apiModule.default, 'getAllThreads').mockRejectedValue(anError);
+    const spy = vi.spyOn(apiModule.default, 'getAllThreads').mockRejectedValue(anError);
 
     const store = configureStore({
       reducer: {

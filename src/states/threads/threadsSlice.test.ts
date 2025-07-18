@@ -8,6 +8,7 @@
  *  - should handle neutralizeVoteThread.fulfilled
  */
 
+import { describe, it, expect } from 'vitest';
 import { Thread } from '../../utils/models';
 import reducer, { fetchThreads, createThread, upVoteThread, downVoteThread, neutralizeVoteThread } from './threadsSlice';
 import { ThreadState } from './threadsSlice';

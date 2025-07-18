@@ -1,116 +1,74 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import ThreadItem from "../components/ThreadItem";
-import { BrowserRouter } from "react-router-dom";
-// import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import ThreadList from "./ThreadList";
+import type { Thread, User } from "../utils/models";
 
-const mockNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useNavigate: () => mockNavigate,
+// 🔹 Mock untuk ThreadItem
+vi.mock("./ThreadItem", () => ({
+  default: ({ thread }: { thread: Thread }) => (
+    <div data-testid="thread-item">{thread.title}</div>
+  ),
 }));
 
-const mockThread = {
-  id: "thread-1",
-  title: "Sample Thread",
-  body: "<p>This is the <strong>body</strong></p>",
-  category: "general",
-  createdAt: new Date().toISOString(),
-  ownerId: "user-1",
-  upVotesBy: [],
-  downVotesBy: [],
-  totalComments: 3,
-};
+const mockUsers: User[] = [
+  { id: "user-1", name: "Alice", email: "alice@example.com", avatar: "url1" },
+  { id: "user-2", name: "Bob", email: "bob@example.com", avatar: "url2" },
+];
 
-const mockUsers = [
+const mockThreads: Thread[] = [
   {
-    id: "user-1",
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "https://example.com/avatar.png",
+    id: "thread-1",
+    title: "First Thread",
+    body: "<p>Hello</p>",
+    category: "General",
+    createdAt: "2025-01-01T00:00:00Z",
+    ownerId: "user-1",
+    upVotesBy: [],
+    downVotesBy: [],
+    totalComments: 0,
+  },
+  {
+    id: "thread-2",
+    title: "Second Thread",
+    body: "<p>World</p>",
+    category: "General",
+    createdAt: "2025-01-02T00:00:00Z",
+    ownerId: "user-2",
+    upVotesBy: [],
+    downVotesBy: [],
+    totalComments: 0,
   },
 ];
 
-describe("ThreadItem Component", () => {
-  it("renders thread title and sanitized body", () => {
+describe("ThreadList Component", () => {
+  it("renders thread items when threads are provided", () => {
     render(
-      <BrowserRouter>
-        <ThreadItem
-          users={mockUsers}
-          profile={mockUsers[0]}
-          thread={mockThread}
-          upVote={jest.fn()}
-          downVote={jest.fn()}
-          neutralizeVoteThread={jest.fn()}
-        />
-      </BrowserRouter>
+      <ThreadList
+        users={mockUsers}
+        threads={mockThreads}
+        upVote={() => {}}
+        downVote={() => {}}
+        neutralizeVoteThread={() => {}}
+      />
     );
 
-    expect(screen.getByText(/Sample Thread/i)).toBeInTheDocument();
-    expect(screen.getByText(/This is the/i)).toBeInTheDocument();
+    const items = screen.getAllByTestId("thread-item");
+    expect(items).toHaveLength(mockThreads.length);
+    expect(screen.getByText("First Thread")).toBeInTheDocument();
+    expect(screen.getByText("Second Thread")).toBeInTheDocument();
   });
 
-  it("shows avatar and username", () => {
+  it("renders loading text when threads are empty", () => {
     render(
-      <BrowserRouter>
-        <ThreadItem
-          users={mockUsers}
-          profile={mockUsers[0]}
-          thread={mockThread}
-          upVote={jest.fn()}
-          downVote={jest.fn()}
-          neutralizeVoteThread={jest.fn()}
-        />
-      </BrowserRouter>
+      <ThreadList
+        users={mockUsers}
+        threads={[]}
+        upVote={() => {}}
+        downVote={() => {}}
+        neutralizeVoteThread={() => {}}
+      />
     );
 
-    expect(screen.getByAltText(/Profile image/i)).toBeInTheDocument();
-    expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
-  });
-
-  it("calls upVote and downVote handlers on button click", async () => {
-    const upVoteMock = jest.fn();
-    const downVoteMock = jest.fn();
-    const neutralizeMock = jest.fn();
-
-    render(
-      <BrowserRouter>
-        <ThreadItem
-          users={mockUsers}
-          profile={mockUsers[0]}
-          thread={mockThread}
-          upVote={upVoteMock}
-          downVote={downVoteMock}
-          neutralizeVoteThread={neutralizeMock}
-        />
-      </BrowserRouter>
-    );
-
-    const upvoteButton = screen.getAllByRole("button")[0];
-    const downvoteButton = screen.getAllByRole("button")[1];
-
-    fireEvent.click(upvoteButton);
-    expect(upVoteMock).toHaveBeenCalledWith("thread-1");
-
-    fireEvent.click(downvoteButton);
-    expect(downVoteMock).toHaveBeenCalledWith("thread-1");
-  });
-
-  it("navigates to thread detail on comment click", () => {
-    render(
-      <BrowserRouter>
-        <ThreadItem
-          users={mockUsers}
-          profile={mockUsers[0]}
-          thread={mockThread}
-          upVote={jest.fn()}
-          downVote={jest.fn()}
-          neutralizeVoteThread={jest.fn()}
-        />
-      </BrowserRouter>
-    );
-
-    const commentButton = screen.getByText(/3 Comments/i);
-    fireEvent.click(commentButton);
-    expect(mockNavigate).toHaveBeenCalledWith("/threads/thread-1");
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
 });

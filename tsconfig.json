@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",                // ✅ untuk React 17+
+    "jsx": "react-jsx",
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "node",
