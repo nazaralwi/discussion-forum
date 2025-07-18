@@ -13,7 +13,7 @@ function LoginPage({ loginSuccess }: LoginPageProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
-  const { token, status } = useSelector((state: RootState) => state.login);
+  const { token, status, error } = useSelector((state: RootState) => state.login);
 
   useEffect(() => {
     if (status === "succeeded") {
@@ -22,7 +22,11 @@ function LoginPage({ loginSuccess }: LoginPageProps) {
       setEmail("");
       setPassword("");
     }
-  }, [dispatch, token, loginSuccess, status]);
+
+    if (status === "failed" && error) {
+      alert(error);
+    }
+  }, [dispatch, token, loginSuccess, status, error]);
 
   const onEmailChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
