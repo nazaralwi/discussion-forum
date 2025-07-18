@@ -1,7 +1,11 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { cleanup, render, screen } from '@testing-library/react';
 import ThreadList from "./ThreadList";
 import type { Thread, User } from "../utils/models";
+
+import matchers from '@testing-library/jest-dom/matchers';
+
+expect.extend(matchers);
 
 // 🔹 Mock untuk ThreadItem
 vi.mock("./ThreadItem", () => ({
@@ -41,6 +45,10 @@ const mockThreads: Thread[] = [
 ];
 
 describe("ThreadList Component", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("renders thread items when threads are provided", () => {
     render(
       <ThreadList
