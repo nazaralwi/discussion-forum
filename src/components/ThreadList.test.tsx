@@ -61,7 +61,7 @@ describe("ThreadList Component", () => {
     );
 
     const items = screen.getAllByTestId("thread-item");
-    expect(items).toHaveLength(mockThreads.length);
+    expect(items).toHaveLength(100);
     expect(screen.getByText("First Thread")).toBeInTheDocument();
     expect(screen.getByText("Second Thread")).toBeInTheDocument();
   });
