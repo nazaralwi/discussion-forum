@@ -1,3 +1,9 @@
+/**
+ * - Thread Thunk
+ *  - dispatches fulfilled when successful
+ *  - dispatches rejected when failing
+ */
+
 import { describe, it, expect, vi } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import threadsReducer, { fetchThreads } from './threadsSlice';

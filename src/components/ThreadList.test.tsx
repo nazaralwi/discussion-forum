@@ -1,3 +1,9 @@
+/**
+ * - ThreadList
+ *  - renders thread items when threads are provided
+ *  - renders loading text when threads are empty
+ */
+
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { cleanup, render, screen } from '@testing-library/react';
 import ThreadList from "./ThreadList";
@@ -61,7 +67,7 @@ describe("ThreadList Component", () => {
     );
 
     const items = screen.getAllByTestId("thread-item");
-    expect(items).toHaveLength(100);
+    expect(items).toHaveLength(mockThreads.length); 
     expect(screen.getByText("First Thread")).toBeInTheDocument();
     expect(screen.getByText("Second Thread")).toBeInTheDocument();
   });

@@ -39,16 +39,11 @@ describe('Login spec', () => {
   });
 
   it('should display alert when email and password are wrong', () => {
-    // mengisi username
     cy.get('input[placeholder="Email"]').type('testuser');
-
-    // mengisi password yang salah
     cy.get('input[placeholder="Password"]').type('wrong_password');
 
-    // menekan tombol Login
     cy.get('button').contains(/^Login$/).click();
 
-    // memverifikasi window.alert untuk menampilkan pesan dari API
     cy.on('window:alert', (str) => {
       expect(str).to.equal('email or password is wrong');
     });
