@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 interface ThreadFromProps {
   createThread: (title: string, body: string) => void;
@@ -6,8 +6,8 @@ interface ThreadFromProps {
 }
 
 function ThreadForm({ createThread, className }: ThreadFromProps) {
-  const [title, setTitle] = useState<string>("");
-  const [body, setBody] = useState<string>("");
+  const [title, setTitle] = useState<string>('');
+  const [body, setBody] = useState<string>('');
 
   const onTitleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -20,8 +20,8 @@ function ThreadForm({ createThread, className }: ThreadFromProps) {
   const onCreateThread = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     createThread(title, body);
-    setTitle("");
-    setBody("");
+    setTitle('');
+    setBody('');
   };
 
   return (

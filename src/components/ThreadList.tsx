@@ -1,5 +1,5 @@
-import { Thread, User } from "../utils/models";
-import ThreadItem from "./ThreadItem";
+import { Thread, User } from '../utils/models';
+import ThreadItem from './ThreadItem';
 
 interface ThreadListProps {
   users: User[];

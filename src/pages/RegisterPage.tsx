@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../states";
-import { fetchRegister } from "../states/register/registerSlice";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../states';
+import { fetchRegister } from '../states/register/registerSlice';
 
 interface RegisterPageParams {
   registerSuccess: () => void;
 }
 function RegisterPage({ registerSuccess }: RegisterPageParams) {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const dispatch = useDispatch<AppDispatch>();
   const { status } = useSelector((state: RootState) => state.register);
 
   useEffect(() => {
-    if (status === "succeeded") {
+    if (status === 'succeeded') {
       registerSuccess();
-      setName("");
-      setEmail("");
-      setPassword("");
+      setName('');
+      setEmail('');
+      setPassword('');
     }
   }, [dispatch, status, registerSuccess]);
 
@@ -32,7 +32,7 @@ function RegisterPage({ registerSuccess }: RegisterPageParams) {
   };
 
   const onPasswordChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setPassword(event.target.value);
   };
@@ -124,7 +124,7 @@ function RegisterPage({ registerSuccess }: RegisterPageParams) {
         </div>
         <div className="mt-2 flex justify-end">
           <p>
-            Already have account?{" "}
+            Already have account?{' '}
             <Link className="text-indigo-600" to="/login">
               Login here
             </Link>

@@ -1,12 +1,12 @@
-import { Routes, Route } from "react-router-dom";
-import HomePage from "../pages/HomePage";
-import ThreadDetailPage from "../pages/ThreadDetailPage";
-import LeaderboardPage from "../pages/LeaderboardsPage";
-import LoginPage from "../pages/LoginPage";
-import RegisterPage from "../pages/RegisterPage";
-import NoFoundPage from "../pages/NoFoundPage";
-import ProfilePage from "../pages/ProfilePage";
-import { User } from "../utils/models";
+import { Routes, Route } from 'react-router-dom';
+import HomePage from '../pages/HomePage';
+import ThreadDetailPage from '../pages/ThreadDetailPage';
+import LeaderboardPage from '../pages/LeaderboardsPage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import NoFoundPage from '../pages/NoFoundPage';
+import ProfilePage from '../pages/ProfilePage';
+import { User } from '../utils/models';
 
 interface MainProps {
   isAuth: boolean;

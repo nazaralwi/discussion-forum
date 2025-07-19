@@ -22,7 +22,7 @@ export interface User {
 }
 
 export interface RegisterResponse {
-  status: "success" | "failure";
+  status: 'success' | 'failure';
   message: string;
   data: {
     user: User;
@@ -30,7 +30,7 @@ export interface RegisterResponse {
 }
 
 export interface LoginResponse {
-  status: "success" | "failure";
+  status: 'success' | 'failure';
   message: string;
   data: {
     token: string;
@@ -38,7 +38,7 @@ export interface LoginResponse {
 }
 
 export interface ThreadResponse {
-  status: "success" | "failure";
+  status: 'success' | 'failure';
   message: string;
   data: {
     thread: Thread;
@@ -46,7 +46,7 @@ export interface ThreadResponse {
 }
 
 export interface ThreadsResponse {
-  status: "success" | "failure";
+  status: 'success' | 'failure';
   message: string;
   data: {
     threads: Thread[];
@@ -54,7 +54,7 @@ export interface ThreadsResponse {
 }
 
 export interface UpvoteThreadResponse {
-  status: "success" | "failure";
+  status: 'success' | 'failure';
   message: string;
   data: {
     vote: Vote;
@@ -62,39 +62,39 @@ export interface UpvoteThreadResponse {
 }
 
 export interface UserResponse {
-  status: "success" | "failure";
-  message: "ok";
+  status: 'success' | 'failure';
+  message: 'ok';
   data: {
     users: User[];
   };
 }
 
 export interface ProfileResponse {
-  status: "success" | "failure";
-  message: "ok";
+  status: 'success' | 'failure';
+  message: 'ok';
   data: {
     user: User;
   };
 }
 
 export interface LeaderboardsResponse {
-  status: "success" | "failure";
-  message: "ok";
+  status: 'success' | 'failure';
+  message: 'ok';
   data: {
     leaderboards: Leaderboard[];
   };
 }
 
 export interface ThreadDetailResponse {
-  status: "success" | "failure";
-  message: "ok";
+  status: 'success' | 'failure';
+  message: 'ok';
   data: {
     detailThread: ThreadDetail;
   };
 }
 
 export interface ThreadCommentResponse {
-  status: "success" | "failure";
+  status: 'success' | 'failure';
   message: string;
   data: {
     comment: ThreadComment;
@@ -108,8 +108,8 @@ export interface Thread {
   category: string;
   createdAt: string;
   ownerId: string;
-  upVotesBy: User["id"][];
-  downVotesBy: User["id"][];
+  upVotesBy: User['id'][];
+  downVotesBy: User['id'][];
   totalComments: number;
 }
 
@@ -120,8 +120,8 @@ export interface ThreadDetail {
   category: string;
   createdAt: string;
   owner: User;
-  upVotesBy: User["id"][];
-  downVotesBy: User["id"][];
+  upVotesBy: User['id'][];
+  downVotesBy: User['id'][];
   comments: ThreadComment[];
 }
 
@@ -137,8 +137,8 @@ export interface ThreadComment {
   content: string;
   createdAt: string;
   owner: User;
-  upVotesBy: User["id"][];
-  downVotesBy: User["id"][];
+  upVotesBy: User['id'][];
+  downVotesBy: User['id'][];
 }
 
 export interface Leaderboard {

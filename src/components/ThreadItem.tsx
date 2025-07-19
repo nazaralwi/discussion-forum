@@ -1,13 +1,13 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Thread, User } from "../utils/models";
-import { postedAt } from "../utils/formatter";
-import DOMPurify from "dompurify";
+import { Link, useNavigate } from 'react-router-dom';
+import { Thread, User } from '../utils/models';
+import { postedAt } from '../utils/formatter';
+import DOMPurify from 'dompurify';
 import {
   AiFillDislike,
   AiFillLike,
   AiOutlineDislike,
   AiOutlineLike,
-} from "react-icons/ai";
+} from 'react-icons/ai';
 
 interface ThreadItemProps {
   users: User[];
@@ -59,7 +59,9 @@ function ThreadItem({
       </Link>
       <h3
         className="mb-3 max-h-32 overflow-hidden text-ellipsis line-clamp-3"
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(thread.body) }}
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(thread.body),
+        }}
       ></h3>
       <div className="flex items-center gap-1.5 mb-3">
         <img
@@ -73,6 +75,8 @@ function ThreadItem({
       </div>
       <div className="flex items-center gap-1.5 mb-3">
         <button
+          id='upvote-button'
+          data-testid='upvote-button'
           onClick={onUpvoteClickHandler}
           className="flex items-center gap-1.5"
         >
@@ -80,6 +84,8 @@ function ThreadItem({
           {isUpVote ? <AiFillLike /> : <AiOutlineLike />}
         </button>
         <button
+          id='downvote-button'
+          data-testid='downvote-button'
           onClick={onDevoteClickHandler}
           className="ml-3 flex items-center gap-1.5"
         >

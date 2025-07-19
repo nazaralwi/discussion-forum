@@ -1,15 +1,15 @@
-import "./App.css";
-import Header from "./components/Header";
-import Main from "./components/Main";
-import Footer from "./components/Footer";
-import { useEffect, useState } from "react";
-import api from "./utils/api";
-import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "./states";
-import { fetchProfile } from "./states/profile/profileSlice";
-import { fetchUserList } from "./states/userlist/userListSlice";
-import LoadingBar from "react-redux-loading-bar";
+import './App.css';
+import Header from './components/Header';
+import Main from './components/Main';
+import Footer from './components/Footer';
+import { useEffect, useState } from 'react';
+import api from './utils/api';
+import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from './states';
+import { fetchProfile } from './states/profile/profileSlice';
+import { fetchUserList } from './states/userlist/userListSlice';
+import LoadingBar from 'react-redux-loading-bar';
 
 function App() {
   const [token, setToken] = useState<string | null>(api.getAccessToken());
@@ -29,17 +29,17 @@ function App() {
   const onLoginSuccess = (token: string) => {
     api.putAccessToken(token);
     setToken(token);
-    navigate("/");
+    navigate('/');
   };
 
   const onLogoutSuccess = () => {
     api.deleteAccessToken();
     setToken(null);
-    navigate("/");
+    navigate('/');
   };
 
   const onRegisterSuccess = () => {
-    navigate("login");
+    navigate('login');
   };
 
   return (

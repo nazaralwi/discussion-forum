@@ -10,7 +10,13 @@
 
 import { describe, it, expect } from 'vitest';
 import { Thread } from '../../utils/models';
-import reducer, { fetchThreads, createThread, upVoteThread, downVoteThread, neutralizeVoteThread } from './threadsSlice';
+import reducer, {
+  fetchThreads,
+  createThread,
+  upVoteThread,
+  downVoteThread,
+  neutralizeVoteThread,
+} from './threadsSlice';
 import { ThreadState } from './threadsSlice';
 
 const initialState: ThreadState = {
@@ -49,7 +55,10 @@ describe('threadsSlice', () => {
   });
 
   it('should handle fetchThreads.fulfilled', () => {
-    const action = { type: fetchThreads.fulfilled.type, payload: sampleThreads };
+    const action = {
+      type: fetchThreads.fulfilled.type,
+      payload: sampleThreads,
+    };
     const nextState = reducer(initialState, action);
     expect(nextState.threads).toEqual(sampleThreads);
     expect(nextState.status).toBe('succeeded');
@@ -91,7 +100,7 @@ describe('threadsSlice', () => {
 
     expect(nextState.status).toBe('succeeded');
 
-    const thread = nextState.threads?.find(t => t.id === updatedThread.id);
+    const thread = nextState.threads?.find((t) => t.id === updatedThread.id);
     expect(thread?.upVotesBy).toContain(userId);
     expect(nextState.threads).toHaveLength(sampleThreads.length);
   });
@@ -123,7 +132,7 @@ describe('threadsSlice', () => {
 
     expect(nextState.status).toBe('succeeded');
 
-    const thread = nextState.threads?.find(t => t.id === updatedThread.id);
+    const thread = nextState.threads?.find((t) => t.id === updatedThread.id);
     expect(thread?.downVotesBy).toContain(userId);
     expect(nextState.threads).toHaveLength(sampleThreads.length);
   });
@@ -136,7 +145,9 @@ describe('threadsSlice', () => {
 
     const updatedThread = {
       ...targetThread,
-      downVotesBy: targetThread.downVotesBy.filter((userId: string) => userId !== userId),
+      downVotesBy: targetThread.downVotesBy.filter(
+        (userId: string) => userId !== userId
+      ),
     };
 
     const preState = {
@@ -155,7 +166,7 @@ describe('threadsSlice', () => {
 
     expect(nextState.status).toBe('succeeded');
 
-    const thread = nextState.threads?.find(t => t.id === updatedThread.id);
+    const thread = nextState.threads?.find((t) => t.id === updatedThread.id);
     expect(thread?.downVotesBy).not.toContain(userId);
     expect(nextState.threads).toHaveLength(sampleThreads.length);
   });
