@@ -3,23 +3,19 @@
 ## ✅ Kriteria Utama 1: Fungsionalitas Aplikasi
 
 - [x] **Authentication**
-
   - [x] Membuat fitur pendaftaran akun.
   - [x] Membuat fitur login akun.
 
 - [x] **Thread Management**
-
   - [x] Menampilkan daftar thread.
   - [x] Menampilkan detail thread beserta komentar.
   - [x] Pengguna dapat membuat thread.
   - [x] Pengguna dapat menambahkan komentar dalam thread.
 
 - [x] **UI/UX**
-
   - [x] Menampilkan loading bar saat memuat data dari API.
 
 - [x] **Informasi pada Halaman Daftar Thread**
-
   - [x] Judul dari thread.
   - [x] Potongan dari body thread (opsional).
   - [x] Waktu pembuatan thread.
@@ -48,7 +44,6 @@
 ## ✅ Kriteria Utama 3: Arsitektur Aplikasi
 
 - [x] **State Management**
-
   - [x] Seluruh state aplikasi yang bersumber dari API disimpan pada Redux Store.
   - [x] Form input / controlled component boleh mengelola state-nya sendiri.
 

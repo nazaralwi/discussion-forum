@@ -1,29 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../states";
-import { assertString } from "../utils/asserts";
-import { fetchLogin } from "../states/login/loginSlice";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../states';
+import { assertString } from '../utils/asserts';
+import { fetchLogin } from '../states/login/loginSlice';
 
 interface LoginPageProps {
   loginSuccess: (token: string) => void;
 }
 
 function LoginPage({ loginSuccess }: LoginPageProps) {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const dispatch = useDispatch<AppDispatch>();
-  const { token, status, error } = useSelector((state: RootState) => state.login);
+  const { token, status, error } = useSelector(
+    (state: RootState) => state.login
+  );
 
   useEffect(() => {
-    if (status === "succeeded") {
+    if (status === 'succeeded') {
       assertString(token);
       loginSuccess(token);
-      setEmail("");
-      setPassword("");
+      setEmail('');
+      setPassword('');
     }
 
-    if (status === "failed" && error) {
+    if (status === 'failed' && error) {
       alert(error);
     }
   }, [dispatch, token, loginSuccess, status, error]);
@@ -33,7 +35,7 @@ function LoginPage({ loginSuccess }: LoginPageProps) {
   };
 
   const onPasswordChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setPassword(event.target.value);
   };
@@ -102,7 +104,7 @@ function LoginPage({ loginSuccess }: LoginPageProps) {
         </div>
         <div className="mt-2 flex justify-end">
           <p>
-            Didn&apos;t have account?{" "}
+            Didn&apos;t have account?{' '}
             <Link className="text-indigo-600" to="/register">
               Register here
             </Link>

@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import ThreadForm from "../components/ThreadForm";
-import ThreadList from "../components/ThreadList";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../states";
+import { useEffect } from 'react';
+import ThreadForm from '../components/ThreadForm';
+import ThreadList from '../components/ThreadList';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../states';
 import {
   createThread,
   downVoteThread,
   fetchThreads,
   neutralizeVoteThread,
   upVoteThread,
-} from "../states/threads/threadsSlice";
-import { User } from "../utils/models";
+} from '../states/threads/threadsSlice';
+import { User } from '../utils/models';
 
 interface HomePageProps {
   isAuth: boolean;
@@ -23,7 +23,7 @@ function HomePage({ isAuth, profile }: HomePageProps) {
   const { userList } = useSelector((state: RootState) => state.userList);
 
   useEffect(() => {
-    if (threadState.status === "idle") {
+    if (threadState.status === 'idle') {
       dispatch(fetchThreads());
     }
   }, [dispatch, threadState.status]);

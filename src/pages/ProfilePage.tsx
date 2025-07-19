@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../states";
+import { useSelector } from 'react-redux';
+import { RootState } from '../states';
 
 function ProfilePage() {
   const { profile } = useSelector((state: RootState) => state.profile);

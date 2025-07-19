@@ -1,13 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import profileSlice from "./profile/profileSlice";
-import { leaderboardsSlice } from "./leaderboards/leaderboardsSlice";
-import { userListSlice } from "./userlist/userListSlice";
-import { threadsSlice } from "./threads/threadsSlice";
-import { authUserSlice } from "./authUser/authUserSlice";
-import { threadDetailSlice } from "./threadDetail/threadDetailSlice";
-import { loginSlice } from "./login/loginSlice";
-import { registerSlice } from "./register/registerSlice";
-import { loadingBarReducer } from "react-redux-loading-bar";
+import { configureStore } from '@reduxjs/toolkit';
+import profileSlice from './profile/profileSlice';
+import { leaderboardsSlice } from './leaderboards/leaderboardsSlice';
+import { userListSlice } from './userlist/userListSlice';
+import { threadsSlice } from './threads/threadsSlice';
+import { authUserSlice } from './authUser/authUserSlice';
+import { threadDetailSlice } from './threadDetail/threadDetailSlice';
+import { loginSlice } from './login/loginSlice';
+import { registerSlice } from './register/registerSlice';
+import { loadingBarReducer } from 'react-redux-loading-bar';
 
 export const store = configureStore({
   reducer: {

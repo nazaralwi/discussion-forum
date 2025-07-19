@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint ./src",
+    "format": "npx prettier --write .",
     "preview": "vite preview",
     "test": "vitest",
     "e2e": "cypress run",
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "dompurify": "^3.2.4",
+    "prettier": "^3.6.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 interface CommentFormProps {
   createComment: (content: string) => void;
@@ -6,10 +6,10 @@ interface CommentFormProps {
 }
 
 function CommentForm({ createComment, className }: CommentFormProps) {
-  const [content, setContent] = useState<string>("");
+  const [content, setContent] = useState<string>('');
 
   const onContentChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setContent(event.target.value);
   };
@@ -17,7 +17,7 @@ function CommentForm({ createComment, className }: CommentFormProps) {
   const onCreateComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     createComment(content);
-    setContent("");
+    setContent('');
   };
 
   return (

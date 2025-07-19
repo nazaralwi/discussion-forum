@@ -1,21 +1,21 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Thread } from "../../utils/models";
-import api from "../../utils/api";
-import { RootState } from "..";
-import { hideLoading, showLoading } from "react-redux-loading-bar";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Thread } from '../../utils/models';
+import api from '../../utils/api';
+import { RootState } from '..';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
 
 export interface ThreadState {
   threads: Thread[] | null;
-  status: "idle" | "loading" | "succeeded" | "failed";
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
 const initialState: ThreadState = {
   threads: null,
-  status: "idle",
+  status: 'idle',
 };
 
 export const fetchThreads = createAsyncThunk(
-  "threads/fetchThreads",
+  'threads/fetchThreads',
   async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(showLoading());
@@ -26,16 +26,16 @@ export const fetchThreads = createAsyncThunk(
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const upVoteThread = createAsyncThunk(
-  "threads/upVoteThread",
+  'threads/upVoteThread',
   async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
-    if (!profile) throw new Error("User not authenticated");
+    if (!profile) throw new Error('User not authenticated');
 
     try {
       dispatch(showLoading());
@@ -47,16 +47,16 @@ export const upVoteThread = createAsyncThunk(
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const downVoteThread = createAsyncThunk(
-  "threads/downVoteThread",
+  'threads/downVoteThread',
   async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
-    if (!profile) throw new Error("User not authenticated");
+    if (!profile) throw new Error('User not authenticated');
 
     try {
       dispatch(showLoading());
@@ -68,16 +68,16 @@ export const downVoteThread = createAsyncThunk(
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const neutralizeVoteThread = createAsyncThunk(
-  "threads/neutralizeVoteThread",
+  'threads/neutralizeVoteThread',
   async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
-    if (!profile) throw new Error("User not authenticated");
+    if (!profile) throw new Error('User not authenticated');
 
     try {
       dispatch(showLoading());
@@ -89,87 +89,90 @@ export const neutralizeVoteThread = createAsyncThunk(
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const createThread = createAsyncThunk(
-  "threads/createThread",
+  'threads/createThread',
   async (
     { title, body }: { title: string; body: string },
-    { getState, dispatch, rejectWithValue },
+    { getState, dispatch, rejectWithValue }
   ) => {
     const state = getState() as RootState;
     const profile = state.profile.profile;
 
-    if (!profile) throw new Error("User not authenticated");
+    if (!profile) throw new Error('User not authenticated');
 
     try {
       dispatch(showLoading());
-      const response = await api.createThread({ title: title, body: body });
+      const response = await api.createThread({
+        title: title,
+        body: body,
+      });
       dispatch(hideLoading());
       return response;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const threadsSlice = createSlice({
-  name: "threads",
+  name: 'threads',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchThreads.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(fetchThreads.fulfilled, (state, action) => {
         state.threads = action.payload;
-        state.status = "succeeded";
+        state.status = 'succeeded';
       })
       .addCase(fetchThreads.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(createThread.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(createThread.fulfilled, (state, action) => {
         state.threads?.unshift(action.payload);
-        state.status = "succeeded";
+        state.status = 'succeeded';
       })
       .addCase(createThread.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(upVoteThread.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(upVoteThread.fulfilled, (state, action) => {
         state.threads = action.payload;
-        state.status = "succeeded";
+        state.status = 'succeeded';
       })
       .addCase(upVoteThread.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(downVoteThread.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(downVoteThread.fulfilled, (state, action) => {
         state.threads = action.payload;
-        state.status = "succeeded";
+        state.status = 'succeeded';
       })
       .addCase(downVoteThread.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(neutralizeVoteThread.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(neutralizeVoteThread.fulfilled, (state, action) => {
         state.threads = action.payload;
-        state.status = "succeeded";
+        state.status = 'succeeded';
       })
       .addCase(neutralizeVoteThread.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       });
   },
 });

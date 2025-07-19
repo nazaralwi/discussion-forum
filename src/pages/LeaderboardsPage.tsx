@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../states";
-import { fetchLeaderboards } from "../states/leaderboards/leaderboardsSlice";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../states';
+import { fetchLeaderboards } from '../states/leaderboards/leaderboardsSlice';
 
 function LeaderboardPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { leaderboards, status } = useSelector(
-    (state: RootState) => state.leaderboards,
+    (state: RootState) => state.leaderboards
   );
 
   useEffect(() => {
-    if (status === "idle") {
+    if (status === 'idle') {
       dispatch(fetchLeaderboards());
     }
   }, [dispatch, status]);

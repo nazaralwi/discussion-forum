@@ -1,17 +1,17 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import api from "../../utils/api";
-import { hideLoading, showLoading } from "react-redux-loading-bar";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import api from '../../utils/api';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
 
 interface RegisterState {
-  status: "idle" | "loading" | "succeeded" | "failed";
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
 const initialState: RegisterState = {
-  status: "idle",
+  status: 'idle',
 };
 
 export const fetchRegister = createAsyncThunk(
-  "auth/register",
+  'auth/register',
   async (
     {
       name,
@@ -22,7 +22,7 @@ export const fetchRegister = createAsyncThunk(
       email: string;
       password: string;
     },
-    { dispatch, rejectWithValue },
+    { dispatch, rejectWithValue }
   ) => {
     try {
       dispatch(showLoading());
@@ -33,23 +33,23 @@ export const fetchRegister = createAsyncThunk(
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const registerSlice = createSlice({
-  name: "register",
+  name: 'register',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchRegister.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(fetchRegister.fulfilled, (state) => {
-        state.status = "succeeded";
+        state.status = 'succeeded';
       })
       .addCase(fetchRegister.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       });
   },
 });

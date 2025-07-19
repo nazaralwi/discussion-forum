@@ -1,9 +1,9 @@
-import { useParams } from "react-router";
-import { useEffect } from "react";
-import { assertString } from "../utils/asserts";
-import CommentForm from "../components/CommentForm";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../states";
+import { useParams } from 'react-router';
+import { useEffect } from 'react';
+import { assertString } from '../utils/asserts';
+import CommentForm from '../components/CommentForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../states';
 import {
   createComment1,
   upVoteThread,
@@ -13,16 +13,16 @@ import {
   neutralizeVoteThread,
   neutralizeVoteComment,
   upVoteComment,
-} from "../states/threadDetail/threadDetailSlice";
-import DOMPurify from "dompurify";
-import { postedAt } from "../utils/formatter";
-import { User } from "../utils/models";
+} from '../states/threadDetail/threadDetailSlice';
+import DOMPurify from 'dompurify';
+import { postedAt } from '../utils/formatter';
+import { User } from '../utils/models';
 import {
   AiFillDislike,
   AiFillLike,
   AiOutlineDislike,
   AiOutlineLike,
-} from "react-icons/ai";
+} from 'react-icons/ai';
 
 interface ThreadDetailPageProps {
   profile?: User;
@@ -32,7 +32,7 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const threadDetailState = useSelector(
-    (state: RootState) => state.threadDetail,
+    (state: RootState) => state.threadDetail
   );
   const userListState = useSelector((state: RootState) => state.userList);
   const isUpVote = profile
@@ -76,7 +76,7 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
 
   const onDevoteClickHandler = async (
     commentId: string,
-    isDownVote: boolean,
+    isDownVote: boolean
   ) => {
     if (isDownVote) {
       dispatch(neutralizeVoteComment({ threadId: id, commentId }));
@@ -99,14 +99,14 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
           <h3
             className="mb-3"
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(threadDetailState.thread?.body ?? ""),
+              __html: DOMPurify.sanitize(threadDetailState.thread?.body ?? ''),
             }}
           ></h3>
           <div className="flex items-center gap-1.5 mb-3">
             <img
               src={
                 (userListState.userList ?? []).find(
-                  (user) => user.id === threadDetailState.thread?.owner.id,
+                  (user) => user.id === threadDetailState.thread?.owner.id
                 )?.avatar
               }
               alt="Profile image"
@@ -115,13 +115,13 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
             <p>
               {
                 (userListState.userList ?? []).find(
-                  (user) => user.id === threadDetailState.thread?.owner.id,
+                  (user) => user.id === threadDetailState.thread?.owner.id
                 )?.name
               }
             </p>
             <p>ᐧ</p>
             <p>
-              {postedAt(new Date(threadDetailState.thread?.createdAt ?? ""))}
+              {postedAt(new Date(threadDetailState.thread?.createdAt ?? ''))}
             </p>
           </div>
           <div className="flex items-center gap-1.5 mb-3">
