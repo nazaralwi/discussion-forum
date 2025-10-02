@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from './states';
 import { fetchProfile } from './states/profile/profileSlice';
 import { fetchUserList } from './states/userlist/userListSlice';
 import LoadingBar from 'react-redux-loading-bar';
+import { fetchThreads } from './states/threads/threadsSlice';
 
 function App() {
   const [token, setToken] = useState<string | null>(api.getAccessToken());
@@ -23,6 +24,7 @@ function App() {
     if (token) {
       dispatch(fetchProfile());
     }
+    dispatch(fetchThreads());
     dispatch(fetchUserList());
   }, [dispatch, token]);
 

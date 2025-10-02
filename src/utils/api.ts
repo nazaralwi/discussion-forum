@@ -131,13 +131,14 @@ const api = (() => {
   async function createThread({
     title,
     body,
+    category
   }: CreateThreadParams): Promise<Thread> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title, body }),
+      body: JSON.stringify({ title, body, category }),
     });
 
     const responseJSON: ThreadResponse = await response.json();

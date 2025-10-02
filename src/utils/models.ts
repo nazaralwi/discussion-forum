@@ -12,6 +12,7 @@ export interface LoginParams {
 export interface CreateThreadParams {
   title: string;
   body: string;
+  category: string | undefined;
 }
 
 export interface User {

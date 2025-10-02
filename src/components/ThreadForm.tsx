@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 
 interface ThreadFromProps {
-  createThread: (title: string, body: string) => void;
+  createThread: (title: string, body: string, category: string | undefined) => void;
+  categories: string[];
   className?: string;
 }
 
-function ThreadForm({ createThread, className }: ThreadFromProps) {
+function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
+  const [category, setCategory] = useState<string | undefined>('');
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>('');
+  const [customCategory, setCustomCategory] = useState<string | undefined>('');
 
   const onTitleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -17,12 +21,25 @@ function ThreadForm({ createThread, className }: ThreadFromProps) {
     setBody(event.target.value);
   };
 
+  const onCategorySelectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(event.target.value ? event.target.value : undefined);
+    setCategory(event.target.value ? event.target.value : undefined);
+  };
+
+  const onCustomCategoryChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomCategory(event.target.value ? event.target.value : undefined);
+    setCategory(event.target.value ? event.target.value : undefined);
+  };
+
   const onCreateThread = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createThread(title, body);
+    createThread(title, body, category);
     setTitle('');
     setBody('');
+    setCategory('');
   };
+
+  console.log(categories);
 
   return (
     <>
@@ -73,6 +90,40 @@ function ThreadForm({ createThread, className }: ThreadFromProps) {
                 placeholder="Body"
               />
             </div>
+          </div>
+        </div>
+        <div className="sm:col-span-4 mt-4">
+          <label
+            htmlFor="body"
+            className="block text-sm font-medium text-gray-900"
+          >
+            Category (optional)
+          </label>
+          <div className="mt-2 space-y-2">
+            <select
+              name="category"
+              id="category"
+              value={selectedCategory && categories.includes(selectedCategory) ? selectedCategory : selectedCategory === '__custom__' ? '__custom__' : ''}
+              onChange={onCategorySelectHandler}
+              className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            >
+              <option value="">-- Select category --</option>
+              {categories.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+              <option value="__custom__">+ Custom...</option>
+            </select>
+            {(selectedCategory && !categories.includes(selectedCategory) && selectedCategory !== '') && (
+              <input
+                type="text"
+                name="category"
+                id="category"
+                value={customCategory}
+                onChange={onCustomCategoryChangeHandler}
+                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                placeholder="Category"
+              />)
+            }
           </div>
         </div>
         <div className="mt-6 flex justify-end">

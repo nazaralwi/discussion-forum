@@ -95,7 +95,7 @@ export const neutralizeVoteThread = createAsyncThunk(
 export const createThread = createAsyncThunk(
   'threads/createThread',
   async (
-    { title, body }: { title: string; body: string },
+    { title, body, category }: { title: string; body: string, category: string | undefined },
     { getState, dispatch, rejectWithValue }
   ) => {
     const state = getState() as RootState;
@@ -108,6 +108,7 @@ export const createThread = createAsyncThunk(
       const response = await api.createThread({
         title: title,
         body: body,
+        category: category,
       });
       dispatch(hideLoading());
       return response;

@@ -25,7 +25,7 @@ function HomePage({ isAuth, profile }: HomePageProps) {
 
   useEffect(() => {
     if (threadState.status === 'idle') {
-      dispatch(fetchThreads());
+      // dispatch(fetchThreads());
     }
   }, [dispatch, threadState.status]);
 
