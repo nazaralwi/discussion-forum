@@ -58,8 +58,8 @@ function HomePage({ isAuth, profile }: HomePageProps) {
   if (!isAuth) {
     return (
       <>
-        <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 justify-center">
-          <div className="flex flex-col gap-2">
+        <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-start">
+          <div className="flex flex-col gap-2 w-full">
             <ThreadList
               users={userList ?? []}
               threads={threadState.threads ?? []}
@@ -75,8 +75,8 @@ function HomePage({ isAuth, profile }: HomePageProps) {
 
   return (
     <>
-      <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-center">
-        <div className='mb-2'>
+      <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-start">
+        <div className='w-full flex justify-end mb-2'>
           <select
             name="category"
             id="category"
@@ -89,7 +89,7 @@ function HomePage({ isAuth, profile }: HomePageProps) {
             ))}
           </select>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <ThreadList
             users={userList ?? []}
             threads={filteredThread ?? []}
