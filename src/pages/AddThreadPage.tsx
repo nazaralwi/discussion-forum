@@ -19,7 +19,7 @@ function AddThreadPage() {
 
   return (
     <>
-      <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-center">
+      <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-start">
         <ThreadForm createThread={handleCreateThread} categories={categories} className="mb-4" />
       </main>
     </>

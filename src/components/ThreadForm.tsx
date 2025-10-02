@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from "draftjs-to-html";
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 interface ThreadFromProps {
   createThread: (title: string, body: string, category: string | undefined) => void;
@@ -8,17 +12,27 @@ interface ThreadFromProps {
 
 function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
   const [title, setTitle] = useState<string>('');
-  const [body, setBody] = useState<string>('');
+  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const [category, setCategory] = useState<string | undefined>('');
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>('');
   const [customCategory, setCustomCategory] = useState<string | undefined>('');
+  const editorWrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (editorWrapperRef.current) {
+      const el = editorWrapperRef.current.querySelector('.editor-class');
+      if (el) {
+        el.scrollTop = el.scrollHeight;
+      }
+    }
+  }, [editorState]);
 
   const onTitleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  const onBodyChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBody(event.target.value);
+  const onEditorStateChangeHandler = (state: EditorState) => {
+    setEditorState(state);
   };
 
   const onCategorySelectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -33,9 +47,11 @@ function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
 
   const onCreateThread = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createThread(title, body, category);
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
+    const htmlBody = draftToHtml(rawContentState);
+    createThread(title, htmlBody, category);
     setTitle('');
-    setBody('');
+    setEditorState(EditorState.createEmpty());
     setCategory('');
   };
 
@@ -45,7 +61,7 @@ function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
     <>
       <form
         onSubmit={onCreateThread}
-        className={`max-w-md w-full bg-white p-6 rounded-lg border-2 border-gray-300 ${className}`}
+        className={`w-full bg-white p-6 rounded-lg border-2 border-gray-300 ${className}`}
       >
         <h1 className="text-base/7 font-semibold text-gray-900">
           Create Thread
@@ -78,18 +94,14 @@ function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
           >
             Body
           </label>
-          <div className="mt-2">
-            <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-              <input
-                type="text"
-                name="body"
-                id="body"
-                value={body}
-                onChange={onBodyChangeHandler}
-                className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
-                placeholder="Body"
-              />
-            </div>
+          <div className="mt-2" ref={editorWrapperRef}>
+            <Editor
+              editorState={editorState}
+              toolbarClassName="toolbar-class"
+              wrapperClassName="wrapper-class"
+              editorClassName="editor-class"
+              onEditorStateChange={onEditorStateChangeHandler}
+            />
           </div>
         </div>
         <div className="sm:col-span-4 mt-4">
