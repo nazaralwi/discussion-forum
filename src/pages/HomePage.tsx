@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
-import ThreadForm from '../components/ThreadForm';
+import { useEffect, useState } from 'react';
 import ThreadList from '../components/ThreadList';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../states';
 import {
-  createThread,
   downVoteThread,
   fetchThreads,
   neutralizeVoteThread,
@@ -22,15 +20,23 @@ function HomePage({ isAuth, profile }: HomePageProps) {
   const threadState = useSelector((state: RootState) => state.threads);
   const { userList } = useSelector((state: RootState) => state.userList);
 
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+
   useEffect(() => {
     if (threadState.status === 'idle') {
       dispatch(fetchThreads());
     }
   }, [dispatch, threadState.status]);
 
-  const handleCreateThread = async (title: string, body: string) => {
-    dispatch(createThread({ title: title, body: body }));
-  };
+  useEffect(() => {
+    if (threadState.threads) {
+      const uniqueCategories = Array.from(
+        new Set(threadState.threads.map((thread) => thread.category))
+      );
+      setCategories(uniqueCategories);
+    }
+  }, [threadState.threads]);
 
   const handleUpVote = async (id: string) => {
     dispatch(upVoteThread(id));
@@ -43,6 +49,11 @@ function HomePage({ isAuth, profile }: HomePageProps) {
   const handleNeutralizeVoteThread = async (id: string) => {
     dispatch(neutralizeVoteThread(id));
   };
+
+  const filteredThread =
+    selectedCategory && selectedCategory !== ''
+      ? threadState.threads?.filter((thread) => thread.category === selectedCategory)
+      : threadState.threads;
 
   if (!isAuth) {
     return (
@@ -65,11 +76,23 @@ function HomePage({ isAuth, profile }: HomePageProps) {
   return (
     <>
       <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-center">
-        <ThreadForm createThread={handleCreateThread} className="mb-4" />
+        <div className='mb-2'>
+          <select
+            name="category"
+            id="category"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
         <div className="flex flex-col gap-2">
           <ThreadList
             users={userList ?? []}
-            threads={threadState.threads ?? []}
+            threads={filteredThread ?? []}
             profile={profile}
             upVote={handleUpVote}
             downVote={handleDownVotes}

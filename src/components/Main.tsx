@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import ThreadDetailPage from '../pages/ThreadDetailPage';
+import AddThreadPage from '../pages/AddThreadPage';
 import LeaderboardPage from '../pages/LeaderboardsPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
@@ -48,6 +49,7 @@ function Main({ isAuth, profile, loginSuccess, registerSuccess }: MainProps) {
         path="/threads/:id"
         element={<ThreadDetailPage profile={profile} />}
       />
+      <Route path="/threads/new" element={<AddThreadPage />} />
       <Route path="/leaderboards" element={<LeaderboardPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/*" element={<NoFoundPage />} />
