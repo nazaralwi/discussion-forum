@@ -8,7 +8,7 @@ interface HeaderParams {
 function Header({ isAuth, logoutSuccess }: HeaderParams) {
   if (!isAuth) {
     return (
-      <header className="flex justify-between p-4">
+      <header className="sticky top-0 z-50 flex justify-between p-4 bg-white shadow">
         <h1 className="text-2xl font-semibold">
           <Link to="/">Our Forum</Link>
         </h1>
@@ -21,7 +21,7 @@ function Header({ isAuth, logoutSuccess }: HeaderParams) {
   }
 
   return (
-    <header className="flex justify-between p-4">
+    <header className="sticky top-0 z-50 flex justify-between p-4 bg-white shadow">
       <h1 className="text-2xl font-semibold">
         <Link to="/">Our Forum</Link>
       </h1>
