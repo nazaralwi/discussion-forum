@@ -142,11 +142,28 @@ export const upVoteComment = createAsyncThunk(
     { getState, dispatch, rejectWithValue }
   ) => {
     const state = getState() as RootState;
+    const thread = state.threadDetail.thread;
     const profile = state.profile.profile;
 
+    if (!thread) throw new Error('Thread not found');
     if (!profile) throw new Error('User not authenticated');
 
     try {
+      const updatedThread = {
+        ...thread,
+        comments: thread.comments.map((comment) => {
+          if (comment.id !== commentId) return comment;
+
+          return {
+            ...comment,
+            upVotesBy: [...comment.upVotesBy, profile.id],
+            downVotesBy: comment.downVotesBy.filter((userId) => userId !== profile.id),
+          };
+        }),
+      };
+
+      dispatch(threadDetailSlice.actions.setThread(updatedThread));
+
       dispatch(showLoading());
       await api.upVoteComment(threadId, commentId);
       dispatch(fetchThreadDetail(threadId));
@@ -166,11 +183,28 @@ export const downVoteComment = createAsyncThunk(
     { getState, dispatch, rejectWithValue }
   ) => {
     const state = getState() as RootState;
+    const thread = state.threadDetail.thread;
     const profile = state.profile.profile;
 
+    if (!thread) throw new Error('Thread not found');
     if (!profile) throw new Error('User not authenticated');
 
     try {
+      const updatedThread = {
+        ...thread,
+        comments: thread.comments.map((comment) => {
+          if (comment.id !== commentId) return comment;
+
+          return {
+            ...comment,
+            upVotesBy: comment.upVotesBy.filter((userId) => userId !== profile.id),
+            downVotesBy: [...comment.downVotesBy, profile.id],
+          };
+        }),
+      };
+
+      dispatch(threadDetailSlice.actions.setThread(updatedThread));
+
       dispatch(showLoading());
       await api.downVoteComment(threadId, commentId);
       dispatch(fetchThreadDetail(threadId));
@@ -190,11 +224,36 @@ export const neutralizeVoteComment = createAsyncThunk(
     { getState, dispatch, rejectWithValue }
   ) => {
     const state = getState() as RootState;
+    const thread = state.threadDetail.thread;
     const profile = state.profile.profile;
 
+    if (!thread) throw new Error('Thread not found');
     if (!profile) throw new Error('User not authenticated');
 
     try {
+      const updatedThread = {
+        ...thread,
+        comments: thread.comments.map((comment) => {
+          if (comment.id !== commentId) return comment;
+
+          const newUpVotesBy = comment.upVotesBy.includes(profile.id)
+            ? comment.upVotesBy.filter((userId) => userId !== profile.id)
+            : comment.upVotesBy;
+
+          const newDownVotesBy = comment.downVotesBy.includes(profile.id)
+            ? comment.downVotesBy.filter((userId) => userId !== profile.id)
+            : comment.downVotesBy;
+
+          return {
+            ...comment,
+            upVotesBy: newUpVotesBy,
+            downVotesBy: newDownVotesBy,
+          };
+        }),
+      };
+
+      dispatch(threadDetailSlice.actions.setThread(updatedThread));
+
       dispatch(showLoading());
       await api.neutralizeVoteComment(threadId, commentId);
       dispatch(fetchThreadDetail(threadId));
