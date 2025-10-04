@@ -9,6 +9,7 @@ import {
   upVoteThread,
 } from '../states/threads/threadsSlice';
 import { User } from '../utils/models';
+import { showLoading } from 'react-redux-loading-bar';
 
 interface HomePageProps {
   isAuth: boolean;
@@ -25,7 +26,7 @@ function HomePage({ isAuth, profile }: HomePageProps) {
 
   useEffect(() => {
     if (threadState.status === 'idle') {
-      // dispatch(fetchThreads());
+      dispatch(fetchThreads());
     }
   }, [dispatch, threadState.status]);
 
@@ -40,16 +41,20 @@ function HomePage({ isAuth, profile }: HomePageProps) {
 
   const handleUpVote = async (id: string) => {
     dispatch(upVoteThread(id));
+    console.log(threadState.threads);
   };
 
   const handleDownVotes = async (id: string) => {
     dispatch(downVoteThread(id));
+    console.log(threadState.threads);
   };
 
   const handleNeutralizeVoteThread = async (id: string) => {
     dispatch(neutralizeVoteThread(id));
+    console.log(threadState.threads);
   };
 
+  console.log(threadState.threads);
   const filteredThread =
     selectedCategory && selectedCategory !== ''
       ? threadState.threads?.filter((thread) => thread.category === selectedCategory)
@@ -59,10 +64,23 @@ function HomePage({ isAuth, profile }: HomePageProps) {
     return (
       <>
         <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-start">
-          <div className="flex flex-col gap-2 w-full">
+          <div className='w-full flex justify-end mb-2'>
+            <select
+              name="category"
+              id="category"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
+          <div className="w-full flex flex-col gap-2">
             <ThreadList
               users={userList ?? []}
-              threads={threadState.threads ?? []}
+              threads={filteredThread ?? []}
               upVote={handleUpVote}
               downVote={handleDownVotes}
               neutralizeVoteThread={handleNeutralizeVoteThread}
@@ -89,7 +107,7 @@ function HomePage({ isAuth, profile }: HomePageProps) {
             ))}
           </select>
         </div>
-        <div className="flex flex-col gap-2 w-full">
+        <div className="w-full flex flex-col gap-2">
           <ThreadList
             users={userList ?? []}
             threads={filteredThread ?? []}

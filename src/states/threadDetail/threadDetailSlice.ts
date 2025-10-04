@@ -3,6 +3,7 @@ import { ThreadDetail } from '../../utils/models';
 import api from '../../utils/api';
 import { RootState } from '..';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { fetchThreads } from '../threads/threadsSlice';
 
 interface ThreadDetailState {
   thread: ThreadDetail | null;
@@ -40,9 +41,11 @@ export const upVoteThread = createAsyncThunk(
     try {
       dispatch(showLoading());
       await api.upVoteThread(id);
-      const detailThread = await api.getThreadDetail(id);
+      await dispatch(fetchThreadDetail(id));
+      await dispatch(fetchThreads());
+      // const detailThread = await api.getThreadDetail(id);
       dispatch(hideLoading());
-      return detailThread;
+      // return detailThread;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -61,9 +64,11 @@ export const downVoteThread = createAsyncThunk(
     try {
       dispatch(showLoading());
       await api.downVoteThread(id);
-      const detailThread = await api.getThreadDetail(id);
+      await dispatch(fetchThreadDetail(id));
+      await dispatch(fetchThreads());
+      // const detailThread = await api.getThreadDetail(id);
       dispatch(hideLoading());
-      return detailThread;
+      // return detailThread;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -82,9 +87,11 @@ export const neutralizeVoteThread = createAsyncThunk(
     try {
       dispatch(showLoading());
       await api.neutralizeVoteThread(id);
-      const detailThread = await api.getThreadDetail(id);
+      await dispatch(fetchThreadDetail(id));
+      await dispatch(fetchThreads());
+      // const detailThread = await api.getThreadDetail(id);
       dispatch(hideLoading());
-      return detailThread;
+      // return detailThread;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -207,8 +214,8 @@ export const threadDetailSlice = createSlice({
       .addCase(upVoteThread.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(upVoteThread.fulfilled, (state, action) => {
-        state.thread = action.payload;
+      .addCase(upVoteThread.fulfilled, (state) => {
+        // state.thread = action.payload;
         state.status = 'succeeded';
       })
       .addCase(upVoteThread.rejected, (state) => {
@@ -217,8 +224,7 @@ export const threadDetailSlice = createSlice({
       .addCase(downVoteThread.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(downVoteThread.fulfilled, (state, action) => {
-        state.thread = action.payload;
+      .addCase(downVoteThread.fulfilled, (state) => {
         state.status = 'succeeded';
       })
       .addCase(downVoteThread.rejected, (state) => {
@@ -227,8 +233,8 @@ export const threadDetailSlice = createSlice({
       .addCase(neutralizeVoteThread.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(neutralizeVoteThread.fulfilled, (state, action) => {
-        state.thread = action.payload;
+      .addCase(neutralizeVoteThread.fulfilled, (state) => {
+        // state.thread = action.payload;
         state.status = 'succeeded';
       })
       .addCase(neutralizeVoteThread.rejected, (state) => {
@@ -237,8 +243,8 @@ export const threadDetailSlice = createSlice({
       .addCase(createComment1.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(createComment1.fulfilled, (state, action) => {
-        state.thread = action.payload;
+      .addCase(createComment1.fulfilled, (state) => {
+        // state.thread = action.payload;
         state.status = 'succeeded';
       })
       .addCase(createComment1.rejected, (state) => {

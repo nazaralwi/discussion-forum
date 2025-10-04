@@ -40,9 +40,10 @@ export const upVoteThread = createAsyncThunk(
     try {
       dispatch(showLoading());
       await api.upVoteThread(id);
-      const threads = await api.getAllThreads();
+      // const threads = await api.getAllThreads();
+      await dispatch(fetchThreads());
       dispatch(hideLoading());
-      return threads;
+      // return threads;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -61,9 +62,10 @@ export const downVoteThread = createAsyncThunk(
     try {
       dispatch(showLoading());
       await api.downVoteThread(id);
-      const threads = await api.getAllThreads();
+      // const threads = await api.getAllThreads();
+      await dispatch(fetchThreads());
       dispatch(hideLoading());
-      return threads;
+      // return threads;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -82,9 +84,10 @@ export const neutralizeVoteThread = createAsyncThunk(
     try {
       dispatch(showLoading());
       await api.neutralizeVoteThread(id);
-      const threads = await api.getAllThreads();
+      // const threads = await api.getAllThreads();
+      await dispatch(fetchThreads());
       dispatch(hideLoading());
-      return threads;
+      // return threads;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -110,6 +113,7 @@ export const createThread = createAsyncThunk(
         body: body,
         category: category,
       });
+      await dispatch(fetchThreads());
       dispatch(hideLoading());
       return response;
     } catch (error) {
@@ -138,8 +142,8 @@ export const threadsSlice = createSlice({
       .addCase(createThread.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(createThread.fulfilled, (state, action) => {
-        state.threads?.unshift(action.payload);
+      .addCase(createThread.fulfilled, (state) => {
+        // state.threads?.unshift(action.payload);
         state.status = 'succeeded';
       })
       .addCase(createThread.rejected, (state) => {
@@ -148,8 +152,7 @@ export const threadsSlice = createSlice({
       .addCase(upVoteThread.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(upVoteThread.fulfilled, (state, action) => {
-        state.threads = action.payload;
+      .addCase(upVoteThread.fulfilled, (state) => {
         state.status = 'succeeded';
       })
       .addCase(upVoteThread.rejected, (state) => {
@@ -158,8 +161,7 @@ export const threadsSlice = createSlice({
       .addCase(downVoteThread.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(downVoteThread.fulfilled, (state, action) => {
-        state.threads = action.payload;
+      .addCase(downVoteThread.fulfilled, (state) => {
         state.status = 'succeeded';
       })
       .addCase(downVoteThread.rejected, (state) => {
@@ -168,8 +170,7 @@ export const threadsSlice = createSlice({
       .addCase(neutralizeVoteThread.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(neutralizeVoteThread.fulfilled, (state, action) => {
-        state.threads = action.payload;
+      .addCase(neutralizeVoteThread.fulfilled, (state) => {
         state.status = 'succeeded';
       })
       .addCase(neutralizeVoteThread.rejected, (state) => {
