@@ -90,7 +90,7 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
   return (
     <>
       <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center">
-        <div className="w-full p-2 border-2 rounded-sm mb-8">
+        <div className="w-full p-2 rounded-md shadow-sm border border-neutral-200 bg-white mb-8">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
             {threadDetailState.thread?.title}
           </h3>
@@ -144,7 +144,7 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
         </div>
 
         <h2>Comments ({threadDetailState.thread?.comments.length})</h2>
-        <CommentForm createComment={createComment} className="mb-8 w-full" />
+        <CommentForm createComment={createComment} className="mb-4 w-full" />
         {threadDetailState.thread?.comments.map((comment) => {
           const isUpVoteComment = profile
             ? comment.upVotesBy.includes(profile!.id)
@@ -156,7 +156,7 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
           return (
             <div
               key={comment.id}
-              className="p-2 border-2 rounded-sm mb-8 w-full"
+              className="p-2 rounded-md shadow-sm border border-neutral-200 bg-white mb-4 w-full"
             >
               <div className="flex items-center gap-1.5 mb-3">
                 <img
