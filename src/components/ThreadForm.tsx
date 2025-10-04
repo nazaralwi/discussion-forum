@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from "draftjs-to-html";
+import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 interface ThreadFromProps {
@@ -54,8 +54,6 @@ function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
     setEditorState(EditorState.createEmpty());
     setCategory('');
   };
-
-  console.log(categories);
 
   return (
     <>

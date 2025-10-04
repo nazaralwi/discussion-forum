@@ -44,8 +44,6 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
 
   assertString(id);
 
-  console.log(id);
-
   useEffect(() => {
     dispatch(fetchThreadDetail(id));
   }, [id, dispatch]);
@@ -97,7 +95,7 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
             {threadDetailState.thread?.title}
           </h3>
           <h3
-            className="mb-3"
+            className="mb-3 wrap-break-word"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(threadDetailState.thread?.body ?? ''),
             }}

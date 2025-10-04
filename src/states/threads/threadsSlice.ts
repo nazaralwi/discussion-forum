@@ -33,17 +33,29 @@ export const upVoteThread = createAsyncThunk(
   'threads/upVoteThread',
   async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
+    const threads = state.threads.threads;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error('User not authenticated');
 
     try {
+      const updatedThreads = threads?.map((thread) =>
+        thread.id === id
+          ? {
+            ...thread,
+            upVotesBy: thread.upVotesBy.includes(profile.id)
+              ? thread.upVotesBy
+              : [...thread.upVotesBy, profile.id],
+            downVotesBy: thread.downVotesBy.filter((userId) => userId !== profile.id),
+          }
+          : thread
+      );
+      dispatch(threadsSlice.actions.setThreads(updatedThreads));
+
       dispatch(showLoading());
       await api.upVoteThread(id);
-      // const threads = await api.getAllThreads();
       await dispatch(fetchThreads());
       dispatch(hideLoading());
-      // return threads;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -55,17 +67,29 @@ export const downVoteThread = createAsyncThunk(
   'threads/downVoteThread',
   async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
+    const threads = state.threads.threads;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error('User not authenticated');
 
     try {
+      const updatedThreads = threads?.map((thread) =>
+        thread.id === id
+          ? {
+            ...thread,
+            upVotesBy: thread.upVotesBy.filter((userId) => userId !== profile.id),
+            downVotesBy: thread.downVotesBy.includes(profile.id)
+              ? thread.downVotesBy
+              : [...thread.downVotesBy, profile.id],
+          }
+          : thread
+      );
+      dispatch(threadsSlice.actions.setThreads(updatedThreads));
+
       dispatch(showLoading());
       await api.downVoteThread(id);
-      // const threads = await api.getAllThreads();
       await dispatch(fetchThreads());
       dispatch(hideLoading());
-      // return threads;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -77,17 +101,36 @@ export const neutralizeVoteThread = createAsyncThunk(
   'threads/neutralizeVoteThread',
   async (id: string, { getState, dispatch, rejectWithValue }) => {
     const state = getState() as RootState;
+    const threads = state.threads.threads;
     const profile = state.profile.profile;
 
     if (!profile) throw new Error('User not authenticated');
 
     try {
+      const updatedThreads = threads?.map((thread) => {
+        if (thread.id !== id) return thread;
+
+        const newUpVotesBy = thread.upVotesBy.includes(profile.id)
+          ? thread.upVotesBy.filter((userId) => userId !== profile.id)
+          : thread.upVotesBy;
+
+        const newDownVotesBy = thread.downVotesBy.includes(profile.id)
+          ? thread.downVotesBy.filter((userId) => userId !== profile.id)
+          : thread.downVotesBy;
+
+        return {
+          ...thread,
+          upVotesBy: newUpVotesBy,
+          downVotesBy: newDownVotesBy,
+        };
+      });
+
+      dispatch(threadsSlice.actions.setThreads(updatedThreads));
+
       dispatch(showLoading());
       await api.neutralizeVoteThread(id);
-      // const threads = await api.getAllThreads();
       await dispatch(fetchThreads());
       dispatch(hideLoading());
-      // return threads;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -108,14 +151,13 @@ export const createThread = createAsyncThunk(
 
     try {
       dispatch(showLoading());
-      const response = await api.createThread({
+      await api.createThread({
         title: title,
         body: body,
         category: category,
       });
       await dispatch(fetchThreads());
       dispatch(hideLoading());
-      return response;
     } catch (error) {
       dispatch(hideLoading());
       return rejectWithValue(error);
@@ -126,7 +168,11 @@ export const createThread = createAsyncThunk(
 export const threadsSlice = createSlice({
   name: 'threads',
   initialState,
-  reducers: {},
+  reducers: {
+    setThreads: (state, action) => {
+      state.threads = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchThreads.pending, (state) => {
@@ -143,7 +189,6 @@ export const threadsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(createThread.fulfilled, (state) => {
-        // state.threads?.unshift(action.payload);
         state.status = 'succeeded';
       })
       .addCase(createThread.rejected, (state) => {

@@ -5,15 +5,15 @@ import { fetchLeaderboards } from '../states/leaderboards/leaderboardsSlice';
 
 function LeaderboardPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { leaderboards, status } = useSelector(
+  const leaderboardsState = useSelector(
     (state: RootState) => state.leaderboards
   );
 
   useEffect(() => {
-    if (status === 'idle') {
+    if (leaderboardsState.status === 'idle') {
       dispatch(fetchLeaderboards());
     }
-  }, [dispatch, status]);
+  }, [dispatch, leaderboardsState.status]);
 
   return (
     <main className="w-full lg:w-1/2 lg:mx-auto flex-1 p-4 justify-center items-center">
@@ -21,8 +21,9 @@ function LeaderboardPage() {
         Leaderboards
       </h1>
       <div className="flex flex-col gap-4">
-        {(leaderboards?.length ?? 0 > 0) ? (
-          leaderboards?.map((leaderboard) => (
+        {leaderboardsState.status === 'loading'
+          ? <p>Loading...</p>
+          : leaderboardsState.leaderboards?.map((leaderboard) => (
             <div
               key={leaderboard.user.name}
               className="flex justify-between gap-2"
@@ -38,9 +39,7 @@ function LeaderboardPage() {
               <h3>{leaderboard.score}</h3>
             </div>
           ))
-        ) : (
-          <p>Loading...</p>
-        )}
+        }
       </div>
     </main>
   );

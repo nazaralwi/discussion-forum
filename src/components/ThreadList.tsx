@@ -33,7 +33,7 @@ function ThreadList({
           />
         ))
       ) : (
-        <p>Loading...</p>
+        <p>Thread is empty!</p>
       )}
     </>
   );

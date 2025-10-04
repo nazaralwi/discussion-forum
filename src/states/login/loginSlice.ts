@@ -34,8 +34,6 @@ export const fetchLogin = createAsyncThunk<
 
       let message = 'Login failed';
 
-      console.log(error);
-
       if (error instanceof Error) {
         message = error.message;
       }
