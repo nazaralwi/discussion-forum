@@ -41,6 +41,8 @@ describe('ThreadItem Component', () => {
           upVote={() => {}}
           downVote={() => {}}
           neutralizeVoteThread={() => {}}
+          onCommentClick={() => {}}
+          onTitleClick={() => {}}
         />
       </BrowserRouter>
     );
@@ -66,6 +68,8 @@ describe('ThreadItem Component', () => {
           upVote={upVoteMock}
           downVote={downVoteMock}
           neutralizeVoteThread={neutralizeMock}
+          onCommentClick={() => {}}
+          onTitleClick={() => {}}
         />
       </BrowserRouter>
     );

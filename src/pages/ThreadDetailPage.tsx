@@ -49,6 +49,10 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
   }, [id, dispatch]);
 
   const onUpvoteThreadClickHandler = async () => {
+    if (!profile) {
+      alert('Authentication required. Please log in before upvoting.');
+    }
+
     if (isUpVote) {
       dispatch(neutralizeVoteThread(id));
     } else {
@@ -57,6 +61,10 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
   };
 
   const onDevoteThreadClickHandler = async () => {
+    if (!profile) {
+      alert('Authentication required. Please log in before downvoting.');
+    }
+
     if (isDownVote) {
       dispatch(neutralizeVoteThread(id));
     } else {
@@ -65,6 +73,10 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
   };
 
   const onUpvoteClickHandler = async (commentId: string, isUpVote: boolean) => {
+    if (!profile) {
+      alert('Authentication required. Please log in before upvoting.');
+    }
+
     if (isUpVote) {
       dispatch(neutralizeVoteComment({ threadId: id, commentId }));
     } else {
@@ -76,6 +88,10 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
     commentId: string,
     isDownVote: boolean
   ) => {
+    if (!profile) {
+      alert('Authentication required. Please log in before downvoting.');
+    }
+
     if (isDownVote) {
       dispatch(neutralizeVoteComment({ threadId: id, commentId }));
     } else {
@@ -144,7 +160,10 @@ function ThreadDetailPage({ profile }: ThreadDetailPageProps) {
         </div>
 
         <h2>Comments ({threadDetailState.thread?.comments.length})</h2>
-        <CommentForm createComment={createComment} className="mb-4 w-full" />
+        { profile
+          ? <CommentForm createComment={createComment} className="mb-4 w-full" />
+          : <></>
+        }
         {threadDetailState.thread?.comments.map((comment) => {
           const isUpVoteComment = profile
             ? comment.upVotesBy.includes(profile!.id)

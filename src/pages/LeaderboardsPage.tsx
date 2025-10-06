@@ -21,9 +21,10 @@ function LeaderboardPage() {
         Leaderboards
       </h1>
       <div className="flex flex-col gap-4">
-        {leaderboardsState.status === 'loading'
-          ? <p>Loading...</p>
-          : leaderboardsState.leaderboards?.map((leaderboard) => (
+        {leaderboardsState.status === 'loading' ? (
+          <p>Loading...</p>
+        ) : (
+          leaderboardsState.leaderboards?.map((leaderboard) => (
             <div
               key={leaderboard.user.name}
               className="flex justify-between gap-2"
@@ -39,7 +40,7 @@ function LeaderboardPage() {
               <h3>{leaderboard.score}</h3>
             </div>
           ))
-        }
+        )}
       </div>
     </main>
   );

@@ -9,6 +9,7 @@ import {
   upVoteThread,
 } from '../states/threads/threadsSlice';
 import { User } from '../utils/models';
+import { useNavigate } from 'react-router';
 
 interface HomePageProps {
   isAuth: boolean;
@@ -17,6 +18,7 @@ interface HomePageProps {
 
 function HomePage({ isAuth, profile }: HomePageProps) {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const threadState = useSelector((state: RootState) => state.threads);
   const userListState = useSelector((state: RootState) => state.userList);
 
@@ -52,14 +54,16 @@ function HomePage({ isAuth, profile }: HomePageProps) {
 
   const filteredThread =
     selectedCategory && selectedCategory !== ''
-      ? threadState.threads?.filter((thread) => thread.category === selectedCategory)
+      ? threadState.threads?.filter(
+        (thread) => thread.category === selectedCategory
+      )
       : threadState.threads;
 
   if (threadState.status === 'loading' && userListState.status == 'loading') {
     return (
       <>
         <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-start">
-          <div className='w-full flex justify-end mb-2'>
+          <div className="w-full flex justify-end mb-2">
             <select
               name="category"
               id="category"
@@ -68,7 +72,9 @@ function HomePage({ isAuth, profile }: HomePageProps) {
             >
               <option value="">All Categories</option>
               {categories.map((category) => (
-                <option key={category} value={category}>{category}</option>
+                <option key={category} value={category}>
+                  {category}
+                </option>
               ))}
             </select>
           </div>
@@ -83,7 +89,7 @@ function HomePage({ isAuth, profile }: HomePageProps) {
   return (
     <>
       <main className="w-full lg:w-1/2 lg:mx-auto flex flex-1 p-4 flex-col items-center justify-start">
-        <div className='w-full flex justify-end mb-2'>
+        <div className="w-full flex justify-end mb-2">
           <select
             name="category"
             id="category"
@@ -92,22 +98,32 @@ function HomePage({ isAuth, profile }: HomePageProps) {
           >
             <option value="">All Categories</option>
             {categories.map((category) => (
-              <option key={category} value={category}>{category}</option>
+              <option key={category} value={category}>
+                {category}
+              </option>
             ))}
           </select>
         </div>
         <div className="w-full flex flex-col gap-2">
-          {
-            (threadState.status === 'loading' && userListState.status == 'loading')
-              ? <p>Loading...</p>
-              : <ThreadList
+          {threadState.status === 'loading' &&
+          userListState.status == 'loading' ? (
+              <p>Loading...</p>
+            ) : (
+              <ThreadList
                 users={userListState.userList ?? []}
                 threads={filteredThread ?? []}
                 profile={isAuth ? profile : undefined}
                 upVote={handleUpVote}
                 downVote={handleDownVotes}
-                neutralizeVoteThread={handleNeutralizeVoteThread} />
-          }
+                neutralizeVoteThread={handleNeutralizeVoteThread}
+                onCommentClick={(id: string) => {
+                  navigate(`/threads/${id}`);
+                }}
+                onTitleClick={(id: string) => {
+                  navigate(`/threads/${id}`);
+                }}
+              />
+            )}
         </div>
       </main>
     </>

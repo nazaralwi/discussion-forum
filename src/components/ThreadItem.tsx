@@ -1,4 +1,3 @@
-import { Link, useNavigate } from 'react-router-dom';
 import { Thread, User } from '../utils/models';
 import { postedAt } from '../utils/formatter';
 import DOMPurify from 'dompurify';
@@ -16,21 +15,28 @@ interface ThreadItemProps {
   upVote: (id: string) => void;
   downVote: (id: string) => void;
   neutralizeVoteThread: (id: string) => void;
+  onCommentClick: (id: string) => void;
+  onTitleClick: (id: string) => void;
 }
 
-function ThreadItem({
+function  ThreadItem({
   users,
   profile,
   thread,
   upVote,
   downVote,
   neutralizeVoteThread,
+  onCommentClick,
+  onTitleClick,
 }: ThreadItemProps) {
-  const navigate = useNavigate();
   const isUpVote = profile ? thread.upVotesBy.includes(profile!.id) : false;
   const isDownVote = profile ? thread.downVotesBy.includes(profile!.id) : false;
 
   const onUpvoteClickHandler = async () => {
+    if (!profile) {
+      alert('Authentication required. Please log in before upvoting.');
+    }
+
     if (isUpVote) {
       neutralizeVoteThread(thread.id);
     } else {
@@ -39,6 +45,10 @@ function ThreadItem({
   };
 
   const onDevoteClickHandler = async () => {
+    if (!profile) {
+      alert('Authentication required. Please log in before downvoting.');
+    }
+
     if (isDownVote) {
       neutralizeVoteThread(thread.id);
     } else {
@@ -46,17 +56,17 @@ function ThreadItem({
     }
   };
 
-  const onCommentClickHandler = () => {
-    navigate(`/threads/${thread.id}`);
-  };
-
   return (
-    <div id="thread-item" className="p-4 rounded-md shadow-sm border border-neutral-200 bg-white">
-      <Link to={`/threads/${thread.id}`}>
-        <h3 className="text-2xl font-bold text-gray-900 mb-4">
-          {thread.title}
-        </h3>
-      </Link>
+    <div
+      id="thread-item"
+      className="p-4 rounded-md shadow-sm border border-neutral-200 bg-white"
+    >
+      <h3
+        className="text-2xl font-bold text-gray-900 mb-4"
+        onClick={() => onTitleClick(thread.id)}
+      >
+        {thread.title}
+      </h3>
       <h3
         className="mb-3 max-h-32 overflow-hidden text-ellipsis line-clamp-3"
         dangerouslySetInnerHTML={{
@@ -75,8 +85,8 @@ function ThreadItem({
       </div>
       <div className="flex items-center gap-1.5 mb-3">
         <button
-          id='upvote-button'
-          data-testid='upvote-button'
+          id="upvote-button"
+          data-testid="upvote-button"
           onClick={onUpvoteClickHandler}
           className="flex items-center gap-1.5"
         >
@@ -84,15 +94,15 @@ function ThreadItem({
           {isUpVote ? <AiFillLike /> : <AiOutlineLike />}
         </button>
         <button
-          id='downvote-button'
-          data-testid='downvote-button'
+          id="downvote-button"
+          data-testid="downvote-button"
           onClick={onDevoteClickHandler}
           className="ml-3 flex items-center gap-1.5"
         >
           {thread.downVotesBy.length}
           {isDownVote ? <AiFillDislike /> : <AiOutlineDislike />}
         </button>
-        <button onClick={onCommentClickHandler} className="ml-3">
+        <button className="ml-3" onClick={() => onCommentClick(thread.id)}>
           {thread.totalComments} Comments
         </button>
       </div>

@@ -46,7 +46,7 @@ function App() {
 
   return (
     <>
-      <LoadingBar className='h-1 bg-violet-500' />
+      <LoadingBar className="h-1 bg-violet-500" />
       <Header isAuth={isAuth} logoutSuccess={onLogoutSuccess} />
       <Main
         isAuth={isAuth}

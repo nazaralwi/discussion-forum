@@ -8,6 +8,8 @@ interface ThreadListProps {
   upVote: (id: string) => void;
   downVote: (id: string) => void;
   neutralizeVoteThread: (id: string) => void;
+  onCommentClick: (id: string) => void,
+  onTitleClick: (id: string) => void,
 }
 
 function ThreadList({
@@ -17,6 +19,8 @@ function ThreadList({
   upVote,
   downVote,
   neutralizeVoteThread,
+  onCommentClick,
+  onTitleClick,
 }: ThreadListProps) {
   return (
     <>
@@ -30,6 +34,8 @@ function ThreadList({
             upVote={upVote}
             downVote={downVote}
             neutralizeVoteThread={neutralizeVoteThread}
+            onCommentClick={onCommentClick}
+            onTitleClick={onTitleClick}
           />
         ))
       ) : (

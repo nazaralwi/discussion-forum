@@ -68,20 +68,6 @@ describe('fetchThreads thunk', () => {
 
 describe('upVoteThread thunk', () => {
   const mockThreadId = 'thread-001';
-  const mockThreads = [
-    {
-      id: 'thread-001',
-      title: 'Bagaimana cara belajar Redux Toolkit?',
-      body: 'Saya ingin memahami Redux Toolkit. Apa langkah pertama yang harus saya ambil?',
-      category: 'programming',
-      createdAt: '2025-07-16T08:00:00.000Z',
-      ownerId: 'user-123',
-      upVotesBy: ['user-456', 'user-789'],
-      downVotesBy: ['user-321'],
-      totalComments: 3,
-    },
-  ];
-
   const mockDispatch = vi.fn();
   const mockGetState = vi.fn();
 
@@ -91,9 +77,13 @@ describe('upVoteThread thunk', () => {
 
   it('dispatches fulfilled when upvote succeeds', async () => {
     (api.upVoteThread as Mock).mockResolvedValueOnce(undefined);
-    (api.getAllThreads as Mock).mockResolvedValueOnce(mockThreads);
 
     mockGetState.mockReturnValue({
+      threads: {
+        threads: [
+          { id: mockThreadId, upVotesBy: [], downVotesBy: [] }
+        ],
+      },
       profile: { profile: { id: 'user-1', name: 'John' } },
     });
 
@@ -101,9 +91,6 @@ describe('upVoteThread thunk', () => {
     const result = await thunk(mockDispatch, mockGetState, undefined);
 
     expect(api.upVoteThread).toHaveBeenCalledWith(mockThreadId);
-    expect(api.getAllThreads).toHaveBeenCalled();
-
-    expect(result.payload).toEqual(mockThreads);
     expect(result.type).toBe(upVoteThread.fulfilled.type);
   });
 
@@ -112,6 +99,11 @@ describe('upVoteThread thunk', () => {
     (api.upVoteThread as Mock).mockRejectedValueOnce(error);
 
     mockGetState.mockReturnValue({
+      threads: {
+        threads: [
+          { id: mockThreadId, upVotesBy: [], downVotesBy: [] }
+        ],
+      },
       profile: { profile: { id: 'user-1' } },
     });
 
