@@ -38,25 +38,27 @@ export const upVoteThread = createAsyncThunk(
 
     if (!profile) throw new Error('User not authenticated');
 
-    try {
-      const updatedThreads = threads?.map((thread) =>
-        thread.id === id
-          ? {
-            ...thread,
-            upVotesBy: thread.upVotesBy.includes(profile.id)
-              ? thread.upVotesBy
-              : [...thread.upVotesBy, profile.id],
-            downVotesBy: thread.downVotesBy.filter((userId) => userId !== profile.id),
-          }
-          : thread
-      );
-      dispatch(threadsSlice.actions.setThreads(updatedThreads));
+    const updatedThreads = threads?.map((thread) =>
+      thread.id === id
+        ? {
+          ...thread,
+          upVotesBy: thread.upVotesBy.includes(profile.id)
+            ? thread.upVotesBy
+            : [...thread.upVotesBy, profile.id],
+          downVotesBy: thread.downVotesBy.filter(
+            (userId) => userId !== profile.id
+          ),
+        }
+        : thread
+    );
+    dispatch(threadsSlice.actions.setThreads(updatedThreads));
 
+    try {
       dispatch(showLoading());
       await api.upVoteThread(id);
-      await dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadsSlice.actions.setThreads(threads));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -77,7 +79,9 @@ export const downVoteThread = createAsyncThunk(
         thread.id === id
           ? {
             ...thread,
-            upVotesBy: thread.upVotesBy.filter((userId) => userId !== profile.id),
+            upVotesBy: thread.upVotesBy.filter(
+              (userId) => userId !== profile.id
+            ),
             downVotesBy: thread.downVotesBy.includes(profile.id)
               ? thread.downVotesBy
               : [...thread.downVotesBy, profile.id],
@@ -88,9 +92,9 @@ export const downVoteThread = createAsyncThunk(
 
       dispatch(showLoading());
       await api.downVoteThread(id);
-      await dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadsSlice.actions.setThreads(threads));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -129,9 +133,9 @@ export const neutralizeVoteThread = createAsyncThunk(
 
       dispatch(showLoading());
       await api.neutralizeVoteThread(id);
-      await dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadsSlice.actions.setThreads(threads));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -141,7 +145,11 @@ export const neutralizeVoteThread = createAsyncThunk(
 export const createThread = createAsyncThunk(
   'threads/createThread',
   async (
-    { title, body, category }: { title: string; body: string, category: string | undefined },
+    {
+      title,
+      body,
+      category,
+    }: { title: string; body: string; category: string | undefined },
     { getState, dispatch, rejectWithValue }
   ) => {
     const state = getState() as RootState;
@@ -171,7 +179,7 @@ export const threadsSlice = createSlice({
   reducers: {
     setThreads: (state, action) => {
       state.threads = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

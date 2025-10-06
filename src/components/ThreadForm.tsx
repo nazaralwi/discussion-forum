@@ -5,16 +5,24 @@ import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 interface ThreadFromProps {
-  createThread: (title: string, body: string, category: string | undefined) => void;
+  createThread: (
+    title: string,
+    body: string,
+    category: string | undefined
+  ) => void;
   categories: string[];
   className?: string;
 }
 
 function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
   const [title, setTitle] = useState<string>('');
-  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
+  const [editorState, setEditorState] = useState<EditorState>(
+    EditorState.createEmpty()
+  );
   const [category, setCategory] = useState<string | undefined>('');
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>('');
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+    ''
+  );
   const [customCategory, setCustomCategory] = useState<string | undefined>('');
   const editorWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -35,12 +43,16 @@ function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
     setEditorState(state);
   };
 
-  const onCategorySelectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onCategorySelectHandler = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedCategory(event.target.value ? event.target.value : undefined);
     setCategory(event.target.value ? event.target.value : undefined);
   };
 
-  const onCustomCategoryChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onCustomCategoryChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setCustomCategory(event.target.value ? event.target.value : undefined);
     setCategory(event.target.value ? event.target.value : undefined);
   };
@@ -113,17 +125,27 @@ function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
             <select
               name="category"
               id="category"
-              value={selectedCategory && categories.includes(selectedCategory) ? selectedCategory : selectedCategory === '__custom__' ? '__custom__' : ''}
+              value={
+                selectedCategory && categories.includes(selectedCategory)
+                  ? selectedCategory
+                  : selectedCategory === '__custom__'
+                    ? '__custom__'
+                    : ''
+              }
               onChange={onCategorySelectHandler}
               className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
               <option value="">-- Select category --</option>
               {categories.map((c) => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c}>
+                  {c}
+                </option>
               ))}
               <option value="__custom__">+ Custom...</option>
             </select>
-            {(selectedCategory && !categories.includes(selectedCategory) && selectedCategory !== '') && (
+            {selectedCategory &&
+              !categories.includes(selectedCategory) &&
+              selectedCategory !== '' && (
               <input
                 type="text"
                 name="category"
@@ -132,8 +154,8 @@ function ThreadForm({ createThread, categories, className }: ThreadFromProps) {
                 onChange={onCustomCategoryChangeHandler}
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Category"
-              />)
-            }
+              />
+            )}
           </div>
         </div>
         <div className="mt-6 flex justify-end">

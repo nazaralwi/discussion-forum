@@ -63,6 +63,8 @@ describe('ThreadList Component', () => {
         upVote={() => {}}
         downVote={() => {}}
         neutralizeVoteThread={() => {}}
+        onCommentClick={() => {}}
+        onTitleClick={() => {}}
       />
     );
 
@@ -72,7 +74,7 @@ describe('ThreadList Component', () => {
     expect(screen.getByText('Second Thread')).toBeInTheDocument();
   });
 
-  it('renders loading text when threads are empty', () => {
+  it('renders empty message when threads are empty', () => {
     render(
       <ThreadList
         users={mockUsers}
@@ -80,9 +82,11 @@ describe('ThreadList Component', () => {
         upVote={() => {}}
         downVote={() => {}}
         neutralizeVoteThread={() => {}}
+        onCommentClick={() => {}}
+        onTitleClick={() => {}}
       />
     );
 
-    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
+    expect(screen.getByText(/Thread is empty!/i)).toBeInTheDocument();
   });
 });

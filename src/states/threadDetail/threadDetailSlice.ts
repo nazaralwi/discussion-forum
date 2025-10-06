@@ -46,17 +46,19 @@ export const upVoteThread = createAsyncThunk(
         upVotesBy: thread.upVotesBy.includes(profile.id)
           ? thread.upVotesBy
           : [...thread.upVotesBy, profile.id],
-        downVotesBy: thread.downVotesBy.filter((userId) => userId !== profile.id),
+        downVotesBy: thread.downVotesBy.filter(
+          (userId) => userId !== profile.id
+        ),
       };
 
       dispatch(threadDetailSlice.actions.setThread(updatedThread));
 
       dispatch(showLoading());
       await api.upVoteThread(id);
-      await dispatch(fetchThreadDetail(id));
       await dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadDetailSlice.actions.setThread(thread));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -86,10 +88,10 @@ export const downVoteThread = createAsyncThunk(
 
       dispatch(showLoading());
       await api.downVoteThread(id);
-      await dispatch(fetchThreadDetail(id));
       await dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadDetailSlice.actions.setThread(thread));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -125,10 +127,10 @@ export const neutralizeVoteThread = createAsyncThunk(
 
       dispatch(showLoading());
       await api.neutralizeVoteThread(id);
-      await dispatch(fetchThreadDetail(id));
       await dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadDetailSlice.actions.setThread(thread));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -157,7 +159,9 @@ export const upVoteComment = createAsyncThunk(
           return {
             ...comment,
             upVotesBy: [...comment.upVotesBy, profile.id],
-            downVotesBy: comment.downVotesBy.filter((userId) => userId !== profile.id),
+            downVotesBy: comment.downVotesBy.filter(
+              (userId) => userId !== profile.id
+            ),
           };
         }),
       };
@@ -166,10 +170,9 @@ export const upVoteComment = createAsyncThunk(
 
       dispatch(showLoading());
       await api.upVoteComment(threadId, commentId);
-      dispatch(fetchThreadDetail(threadId));
-      dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadDetailSlice.actions.setThread(thread));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -197,7 +200,9 @@ export const downVoteComment = createAsyncThunk(
 
           return {
             ...comment,
-            upVotesBy: comment.upVotesBy.filter((userId) => userId !== profile.id),
+            upVotesBy: comment.upVotesBy.filter(
+              (userId) => userId !== profile.id
+            ),
             downVotesBy: [...comment.downVotesBy, profile.id],
           };
         }),
@@ -207,10 +212,9 @@ export const downVoteComment = createAsyncThunk(
 
       dispatch(showLoading());
       await api.downVoteComment(threadId, commentId);
-      dispatch(fetchThreadDetail(threadId));
-      dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadDetailSlice.actions.setThread(thread));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -256,10 +260,9 @@ export const neutralizeVoteComment = createAsyncThunk(
 
       dispatch(showLoading());
       await api.neutralizeVoteComment(threadId, commentId);
-      dispatch(fetchThreadDetail(threadId));
-      dispatch(fetchThreads());
       dispatch(hideLoading());
     } catch (error) {
+      dispatch(threadDetailSlice.actions.setThread(thread));
       dispatch(hideLoading());
       return rejectWithValue(error);
     }
@@ -296,7 +299,7 @@ export const threadDetailSlice = createSlice({
   reducers: {
     setThread: (state, action) => {
       state.thread = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

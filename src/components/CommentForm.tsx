@@ -9,7 +9,9 @@ interface CommentFormProps {
 }
 
 function CommentForm({ createComment, className }: CommentFormProps) {
-  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
+  const [editorState, setEditorState] = useState<EditorState>(
+    EditorState.createEmpty()
+  );
   const editorWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
